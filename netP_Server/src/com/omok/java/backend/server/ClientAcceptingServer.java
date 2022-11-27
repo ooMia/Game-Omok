@@ -1,5 +1,6 @@
 package com.omok.java.backend.server;
 
+import com.omok.java.backend.service.ClientService;
 import com.omok.java.data.room.LobbyData;
 import com.omok.java.frontend.ui.LobbyUI;
 
@@ -37,7 +38,7 @@ public class ClientAcceptingServer extends Thread{
 
 			try {
 				Socket newClientSocket = this.server.serverSocket.accept();
-				LobbyUI newClientUI = new LobbyData(newClientSocket);
+				ClientService newClient = new ClientService(newClientSocket);
 				this.server.clientList.add(newClientUI);
 
 			} catch (Exception e) {

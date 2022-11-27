@@ -9,6 +9,9 @@ public abstract class ClientView extends JPanel {
 		this.frame = frame;
 	}
 
+
+
+
 }
 
 

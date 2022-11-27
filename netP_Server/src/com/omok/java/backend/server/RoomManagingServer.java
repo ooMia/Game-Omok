@@ -40,11 +40,10 @@ public class RoomManagingServer extends Thread{
 
 			// TEST
 			this.server.clientList.forEach(
-					ui -> System.out.println( String.format(
-							"[%s] %s",
-							ui.getName(),
-							ui.getClass().toString())
-					)
+					ui -> System.out.printf(
+							"[%s] %s%n",
+							ui.getClass().toString(),
+							ui)
 			);
 
 		}

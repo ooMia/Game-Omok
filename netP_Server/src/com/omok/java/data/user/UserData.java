@@ -9,9 +9,9 @@ import java.io.IOException;
 public class UserData implements Data {
 
 	public UserStatus userStatus;
-	public String userName;
+	public final String userName;
 
-	public UserData(String hostIP, int hostPort, String u1) throws IOException {
+	public UserData(String u1) throws IOException {
 		this.userStatus = UserStatus.ON_LINE;
 		this.userName = u1;
 	}
@@ -22,8 +22,18 @@ public class UserData implements Data {
 	}
 
 	@Override
-	public void defineBehavior(CodeType code) {
+	public Object definedBehavior(CodeType code) {
+		switch (code)
+		{
+			case LOGIN_STATUS -> {
 
+				getUnpackedData(null, null);
+
+				this.userStatus = UserStatus.ON_LINE;
+				return null;
+			}
+			default -> { return null; }
+		}
 	}
 }
 

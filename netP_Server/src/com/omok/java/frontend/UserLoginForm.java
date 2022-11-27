@@ -7,8 +7,8 @@ import java.net.Socket;
 
 public class UserLoginForm extends ClientView implements ActionListener {
 
-	private String serverIP = null;
-	private Integer serverPort = 30000;
+	private final String serverIP = null;
+	private final Integer serverPort = 30000;
 
 	Socket socket;
 

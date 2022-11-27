@@ -6,6 +6,6 @@ public class Player {
 		this.userDataInfo = userDataInfo;
 	}
 
-	private UserData userDataInfo;
+	private final UserData userDataInfo;
 
 }

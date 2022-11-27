@@ -2,12 +2,11 @@ package com.omok.java.data.message;
 
 import com.omok.java.data.CodeType;
 import com.omok.java.data.Data;
-import com.omok.java.data.user.UserData;
 
 public class Message implements Data {
 
-	private CodeType code;
-	private Data data;
+	private final CodeType code;
+	private final Data data;
 
 	public Message(CodeType code, Data data) {
 		this.code = code;
@@ -16,8 +15,8 @@ public class Message implements Data {
 
 
 	@Override
-	public void defineBehavior(CodeType code) {
-
+	public Object definedBehavior(CodeType code) {
+return null;
 	}
 
 	@Override

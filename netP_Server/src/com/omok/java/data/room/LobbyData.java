@@ -1,16 +1,16 @@
 package com.omok.java.data.room;
 
 import com.omok.java.backend.server.RoomManagingServer;
-import com.omok.java.data.user.UserData;
+import com.omok.java.backend.service.ClientService;
 
 import java.util.ArrayList;
 
 public class LobbyData {
-	private ArrayList<UserData> userDataList;
-	private ArrayList<RoomData> userRoomList;
+	private final ArrayList<ClientService> clientServiceArrayList;
+	private final ArrayList<RoomData> roomDataArrayList;
 
 	public LobbyData(RoomManagingServer rms) {
-		this.userDataList = rms.getServer().getClientList();
-		this.userRoomList = rms.getServer().getRoomList();
+		this.clientServiceArrayList = rms.getServer().getClientList();
+		this.roomDataArrayList = rms.getServer().getRoomList();
 	}
 }

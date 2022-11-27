@@ -12,8 +12,8 @@ import java.net.Socket;
 // 본 클래스의 인스턴스는 Thread 객체로 업캐스팅하고 start 메소드를 호출하여 실행한다.
 public class ClientService implements Runnable {
 
-	private Socket socket;	// ServerSocket.accept()에 의해 할당된 소켓
-	private StreamManager streamManager;
+	private final Socket socket;	// ServerSocket.accept()에 의해 할당된 소켓
+	private final StreamManager streamManager;
 	private UserData userData;
 
 	public ClientService(Socket socket)  {

@@ -1,8 +1,7 @@
 package com.omok.java.backend.server;
 
-
+import com.omok.java.backend.service.ClientService;
 import com.omok.java.data.room.RoomData;
-import com.omok.java.data.user.UserData;
 
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -10,14 +9,16 @@ import java.util.ArrayList;
 public class Server extends Thread {
 
 	protected ServerSocket serverSocket;
-	protected ArrayList<UserData> clientList;
+	protected ArrayList<ClientService> clientList;
 	protected ArrayList<RoomData> roomList;
 	private Integer serverPort = 30000;
 
 	public ArrayList<RoomData> getRoomList() {
 		return roomList;
 	}
-
+	public ArrayList<ClientService> getClientList() {
+		return clientList;
+	}
 	private Server() {
 		super("Server Thread");
 		try {
@@ -25,17 +26,19 @@ public class Server extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.clientList = new ArrayList<UserData>();
+		this.roomList = new ArrayList<>();
+		this.clientList = new ArrayList<>();
 	}
-
+	private static class LazyHolder {
+		private static final Server INSTANCE = new Server();
+	}
 	// Singleton Pattern: Initialization On Demand Holder Idiom
 	public static Server getInstance(){
 		return LazyHolder.INSTANCE;
 	}
 
-	public ArrayList<UserData> getClientList() {
-		return clientList;
-	}
+
+
 
 	public void setServerPort(Integer serverPort) {
 		this.serverPort = serverPort;
@@ -53,7 +56,7 @@ public class Server extends Thread {
 
 		while(true){
 
-
+			if (true) break;
 //			for (UI ui : clientList)  System.out.println(ui.toString());
 
 		}
@@ -61,7 +64,5 @@ public class Server extends Thread {
 	}
 
 
-	private static class LazyHolder {
-		private static final Server INSTANCE = new Server();
-	}
+
 }

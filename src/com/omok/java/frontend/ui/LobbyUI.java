@@ -2,8 +2,8 @@ package com.omok.java.frontend.ui;
 
 import com.omok.java.StreamManager;
 import com.omok.java.backend.server.Server;
-import com.omok.java.data.room.RoomData;
 import com.omok.java.data.Data;
+import com.omok.java.data.room.RoomData;
 import com.omok.java.data.user.UserData;
 import com.omok.java.frontend.WindowFrame;
 
@@ -13,13 +13,11 @@ import java.util.ArrayList;
 
 public class LobbyUI extends UI {
 
-
-
-	ArrayList<RoomData> rooms;
+	ArrayList<RoomData> roomData;
 
 	public LobbyUI(WindowFrame frame, Server server, UserData clientUserData, Socket clientSocket) {
 		super(frame, server, clientUserData, clientSocket);
-//		this.rooms = this.server.getRoomList();
+//		this.roomData = this.server.getRoomList();
 	}
 
 

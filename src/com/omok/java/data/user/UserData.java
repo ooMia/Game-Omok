@@ -1,39 +1,23 @@
 package com.omok.java.data.user;
 
 
-import com.omok.java.data.CodeType;
 import com.omok.java.data.Data;
+import com.omok.java.data.room.RoomData;
 
-import java.io.IOException;
 
-public class UserData implements Data {
 
-	public UserStatus userStatus;
-	public final String userName;
 
-	public UserData(String u1) throws IOException {
-		this.userStatus = UserStatus.ON_LINE;
-		this.userName = u1;
+public class UserData extends Data {
+	public Integer userID;
+	public RoomData userLocation;
+
+	public UserData(Integer userID, RoomData userLocation) {
+		this.userID = userID;
+		this.userLocation = userLocation;
 	}
 
-	@Override
-	public Data getUnpackedData(CodeType code, Data data) {
-		return null;
-	}
-
-	@Override
-	public Object definedBehavior(CodeType code) {
-		switch (code)
-		{
-			case LOGIN_STATUS -> {
-
-				getUnpackedData(null, null);
-
-				this.userStatus = UserStatus.ON_LINE;
-				return null;
-			}
-			default -> { return null; }
-		}
+	enum UserStatus {
+		SLEEP_STATUS, WAKEUP_STATUS
 	}
 }
 

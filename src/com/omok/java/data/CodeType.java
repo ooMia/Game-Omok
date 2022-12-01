@@ -4,8 +4,7 @@ public enum CodeType {
 
 	LOGIN_STATUS	,
 	LOGOUT_STATUS	,
-	SLEEP_STATUS	,
-	WAKEUP_STATUS	,
+
 
 	GET_LIST_USER	,
 	TO_ONE_USER	,

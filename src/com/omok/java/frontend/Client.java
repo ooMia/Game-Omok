@@ -28,7 +28,10 @@ public class Client implements Runnable {
 		System.out.println(this.socket.toString() + "\tSTART");
 
 		try {
-//			toServer.writeObject("Hello, World!");
+
+//			toServer.writeObject("1");
+//			3 x 3
+
 			Object o = fromServer.readObject();
 			System.out.println(String.format(
 					"%s%s : is%sString, \"%s\"", this.getClass(), this.socket.toString(), (o instanceof String)?"":"Not", o.toString()

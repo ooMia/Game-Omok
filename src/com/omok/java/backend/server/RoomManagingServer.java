@@ -1,7 +1,5 @@
 package com.omok.java.backend.server;
 
-import com.omok.java.data.room.RoomData;
-
 public class RoomManagingServer extends Thread{
 
 	private Server server;

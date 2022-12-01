@@ -1,11 +1,7 @@
 package com.omok.java.backend.server;
 
-import com.omok.java.backend.service.ClientService;
-import com.omok.java.data.room.RoomData;
-
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
 
 public class Server extends Thread {
 

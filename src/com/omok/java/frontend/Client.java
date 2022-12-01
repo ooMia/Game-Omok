@@ -25,15 +25,14 @@ public class Client implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(this.toString() + "\tSTART");
-
-		System.out.println(this.socket.toString());
+		System.out.println(this.socket.toString() + "\tSTART");
 
 		try {
 //			toServer.writeObject("Hello, World!");
-			String o = (String) fromServer.readObject();
-			System.out.println(this.socket.toString() + " : " + o);
-			System.out.println(o.getClass().toString());
+			Object o = fromServer.readObject();
+			System.out.println(String.format(
+					"%s%s : is%sString, \"%s\"", this.getClass(), this.socket.toString(), (o instanceof String)?"":"Not", o.toString()
+			));
 
 //			this.socket.close();
 

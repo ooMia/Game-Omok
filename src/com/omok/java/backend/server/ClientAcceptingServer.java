@@ -23,13 +23,13 @@ public class ClientAcceptingServer implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(this.toString() + "\tSTART");
+		System.out.println(this.getClass().toString() + "\tSTART");
 
 		Socket client;
 		final ThreadGroup clientThreadGroup = new ThreadGroup("Clients");
 
 		try {
-			System.out.println(this.toString() + "\tWAITING FOR CLIENTS...");
+			System.out.println(this.getClass().toString() + "\tWAITING FOR CLIENTS...");
 			client = serverSocket.accept(); // made Thread blocked.
 
 			new Thread( clientThreadGroup, new MessageHandlerServer(clientThreadGroup, client) ).start();
@@ -42,7 +42,7 @@ public class ClientAcceptingServer implements Runnable {
 
 		while (clientThreadGroup.activeCount() >= 0);
 
-		System.out.println(this.toString() + "\tEND");
+		System.out.println(this.getClass().toString() + "\tEND");
 	}
 
 

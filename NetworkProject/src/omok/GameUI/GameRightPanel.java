@@ -15,17 +15,20 @@ public class GameRightPanel extends JPanel {
 	private GridBagConstraints cons;
 	
 	// Panes
-	private JPanel characterPanel = new CharacterPanel();
-	private JPanel gameMenuPanel = new GameMenuPanel();
+	public GameMenuPanel gameMenuPanel;
+	private CharacterPanel characterPanel;
 	private JPanel tempPanel = new JPanel();
 	
-	public GameRightPanel() {
+	public GameRightPanel(boolean isObserve) {
 		gridBag = new GridBagLayout();
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		int[] rows = new int[10];
 		Arrays.fill(rows, 72);
 		gridBag.rowHeights = rows;
 		setLayout(gridBag);
+		
+		characterPanel = new CharacterPanel();
+		gameMenuPanel = new GameMenuPanel(isObserve);
 		
 		this.setLayout(gridBag);
 		

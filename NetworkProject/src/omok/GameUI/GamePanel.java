@@ -1,9 +1,13 @@
 package omok.GameUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import javax.swing.*;
+
+import omok.MainFrame;
 
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -18,24 +22,41 @@ public class GamePanel extends JPanel {
 	private Image woodBackground;
 	
 	// Panels
-	private JPanel leftPanel;
-	private JPanel rightPanel;
+	private GameLeftPanel leftPanel;
+	private GameRightPanel rightPanel;
 	
-	public GamePanel() {
+	public GamePanel(boolean isObserve) {
 		// background
 		ImageIcon backIcon = new ImageIcon("./image/mainbackground.jpg");
 		woodBackground = backIcon.getImage();
 		
 		gridBag = new GridBagLayout();
-		// column을 10개로 제한하고 각 크기를 100으로 설정\
+		// column을 10개로 제한하고 각 크기를 94으로 설정\
 		int[] columns = new int[10];
 		Arrays.fill(columns, 94);
 		gridBag.columnWidths = columns;
 		setLayout(gridBag);
 		
-		leftPanel = new GameLeftPanel();
-		rightPanel = new GameRightPanel();
+		leftPanel = new GameLeftPanel(isObserve);
+		rightPanel = new GameRightPanel(isObserve);
 		
+		if(isObserve) {
+			rightPanel.gameMenuPanel.showCount.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					leftPanel.changePanel();
+				}
+			});
+		} else {
+			rightPanel.gameMenuPanel.start.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					leftPanel.goBoardPanel.gameStart();
+				}
+			});
+		}
 		// UI 생성
 		setUI();
 	}

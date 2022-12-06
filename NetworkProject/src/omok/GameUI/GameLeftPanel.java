@@ -17,10 +17,17 @@ public class GameLeftPanel extends JPanel {
 	// Constraints for GridBag set
 	private GridBagConstraints cons;
 	// Panels
-	private JPanel goBoardPanel = new GoBoardPanel();
-	private JPanel chatPanel = new GameChatPanel();
+	public GoBoardPanel goBoardPanel;
+	public GoBoardPanel observerBoardPanel = null;
+	private GameChatPanel chatPanel;
+	//
 	
-	public GameLeftPanel() {
+	public GameLeftPanel(boolean isObserve) {
+		goBoardPanel = new GoBoardPanel(isObserve);
+		chatPanel = new GameChatPanel();
+		if(isObserve)
+			observerBoardPanel = new GoBoardPanel(isObserve);
+
 		// background
 		ImageIcon backIcon = new ImageIcon("./image/mainbackground.jpg");
 		woodBackground = backIcon.getImage();
@@ -36,6 +43,24 @@ public class GameLeftPanel extends JPanel {
 	}
 	
 	private void setUI() {
+		if(observerBoardPanel != null) {
+        	cons = new GridBagConstraints();
+    		cons.fill = GridBagConstraints.BOTH;;
+    		cons.gridx = 0;	// grid x,y
+    		cons.gridy = 0;
+    		cons.gridwidth = 1;
+    		cons.gridheight = 8;	// 80%
+    		cons.weightx = 1f;
+    		cons.weighty = 1f;
+    		cons.ipadx = 0;
+    		cons.ipady = 0;
+    		cons.anchor = GridBagConstraints.PAGE_START;
+    		//cons.insets = new Insets(10, 0, 0, 0);
+    		gridBag.setConstraints(observerBoardPanel, cons);
+    		this.add(observerBoardPanel);
+    		observerBoardPanel.setVisible(false);
+        }
+		
 		// goBoardPanel add
 		cons = new GridBagConstraints();
 		cons.fill = GridBagConstraints.BOTH;;
@@ -67,6 +92,15 @@ public class GameLeftPanel extends JPanel {
 		cons.insets = new Insets(10, 0, 0, 0);	// margin
 		gridBag.setConstraints(chatPanel, cons);
         this.add(chatPanel);
+	}
+	
+	public void changePanel() {
+		if(goBoardPanel.isVisible()) {
+			goBoardPanel.setVisible(false);
+			observerBoardPanel.setVisible(true);
+		}
+		this.revalidate();
+		this.repaint();
 	}
 	
 	public void paintComponent(Graphics g)

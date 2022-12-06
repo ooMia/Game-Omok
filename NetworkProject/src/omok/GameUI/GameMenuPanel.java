@@ -16,12 +16,13 @@ public class GameMenuPanel extends JPanel {
 	
 	// Buttons
 	private JButton ready;
-	private JButton start;
+	public JButton start;
 	private JButton surrender;
 	private JButton withdraw;
-	private JButton a;
+	// 수순
+	public JButton showCount;
 	
-	public GameMenuPanel() {
+	public GameMenuPanel(boolean isObserve) {
 		// set layout
 		gridBag = new GridBagLayout();
 		int[] rows = new int[12];
@@ -56,6 +57,14 @@ public class GameMenuPanel extends JPanel {
 		cons.insets = new Insets(5, 5, 5, 5);
 		gridBag.setConstraints(withdraw, cons);
 		add(withdraw);
+		
+		if(isObserve) {
+			showCount = new JButton("수순");
+			cons = gbc(1, 2, 1, 2);
+			cons.insets = new Insets(5, 5, 5, 5);
+			gridBag.setConstraints(showCount, cons);
+			add(showCount);
+		}
 	}
 	
 	private GridBagConstraints gbc(int x, int y, int w, int h) {

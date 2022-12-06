@@ -11,21 +11,21 @@ import omok.GameUI.GamePanel;
 import omok.LobbyUI.LobbyPanel;
 import omok.LoginUI.LoginPanel;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	// window setting
 	private final String FRAME_TITLE = "오목";
-	private int FRAME_WIDTH = 940;
-    private int FRAME_HEIGHT = 780;
-    //private int FRAME_LOC_X = 20;
-    //private int FRAME_LOC_Y = 20;
+	private int mainFrameWidth = 940;
+    private int mainFrameHeight = 780;
+	private int loginFrameWidth = 600;
+    private int loginFrameHeight = 400;
     
     // JFrame Container
     private Container c;
     
     // JPanel
-    private JPanel gamePanel;
+    private JPanel mainPanel;
     
     // Dimension, 윈도우 창 크기
     private Dimension mainDimension;
@@ -36,31 +36,32 @@ public class MainFrame extends JFrame {
     
 	public MainFrame(String ipAddr, String portNo) {
 		setTitle(FRAME_TITLE);
-		loginDimension = new Dimension(600, 400);
-		mainDimension = new Dimension(FRAME_WIDTH, FRAME_HEIGHT);
+		loginDimension = new Dimension(loginFrameWidth, loginFrameHeight);
+		mainDimension = new Dimension(mainFrameWidth, mainFrameHeight);
 		setPreferredSize(loginDimension);
+		//setPreferredSize(mainDimension);
+		
 		//setMinimumSize(mainDimension);
 		setResizable(false);
 		pack();
 		// 윈도우 창 중앙 생성
-		//setLocation(FRAME_LOC_X, FRAME_LOC_Y);
 		setLocationRelativeTo(null);
 		
-		gamePanel = new LoginPanel();
+		// 로그인
+		mainPanel = new LoginPanel(this);
 		c = getContentPane();
-		c.add(gamePanel);
-		
-		try {
-			socket = new Socket(ipAddr, Integer.parseInt(portNo));
-			listenNetwork = new NetworkService(socket);
-			//listenNetwork.run();	
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+		c.add(mainPanel);
 	}
 	
 	// lobby <<-->> gameroom panel change
-	private void changePanel() {
-		
+	public void changePanel() {
+		this.remove(mainPanel);
+		mainPanel = new LobbyPanel();
+		this.setSize(mainDimension);
+		this.setPreferredSize(mainDimension);
+		this.setLocationRelativeTo(null);
+		this.add(mainPanel);
+		this.pack();
+		repaint();
 	}
 }

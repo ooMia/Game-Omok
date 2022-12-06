@@ -3,8 +3,12 @@ package omok.GameUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GoBoardPanel extends JPanel {
@@ -16,15 +20,22 @@ public class GoBoardPanel extends JPanel {
 	// ¹ÙµÏ¾Ë
 	private ImageIcon blackStoneIcon;
 	private ImageIcon whiteStoneIcon;
+	private ImageIcon blackStonetrIcon;
+	private ImageIcon whiteStonetrIcon;
 	private ArrayList<Stone> stoneList = new ArrayList<Stone>();
 	private JLabel bStone;
 	private JLabel wStone;
+	private JLabel tStone;
+	
+	private boolean isStart;
+	private boolean playerTurn;
+	private MouseAdapter mouseAdapter;
 	
 	private int[] gridXPos = {24, 55, 86, 118, 149, 180, 211, 242, 274, 305, 337, 368, 400, 431, 462, 493, 524, 556, 587};
 	private int[] gridYPos = {20, 50, 80, 109, 139, 169, 199, 229, 258, 288, 318, 348, 378, 407, 437, 467, 497, 527, 556};
 	private int[][] stonePos = new int[19][19];
 	
-	public GoBoardPanel() {
+	public GoBoardPanel(boolean isObserve) {
 		this.setPreferredSize(new Dimension(613, 577));
 		this.setLayout(null);
 		ImageIcon boardIcon = new ImageIcon("./image/boardt.jpg");
@@ -32,20 +43,67 @@ public class GoBoardPanel extends JPanel {
 		
 		blackStoneIcon = new ImageIcon("./image/blackstonet.png");
 		whiteStoneIcon = new ImageIcon("./image/whitestonet.png");
+		blackStonetrIcon = new ImageIcon("./image/blackstonetr.png");
+		whiteStonetrIcon = new ImageIcon("./image/whitestonetr.png");
 		
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		bStone = new JLabel();
-		bStone.setIcon(blackStoneIcon);
+		bStone = new JLabel(blackStoneIcon);
+		//bStone.setIcon(blackStoneIcon);
 		wStone = new JLabel();
 		wStone.setIcon(whiteStoneIcon);
 		
-		addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                placeStone(e.getPoint());
-            }
-        });
+		isStart = false;
+		playerTurn = false;
+		
+		tStone = new JLabel();
+		
+		if(!isObserve) {
+			mouseAdapter = new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					if(playerTurn)
+						placeStone(calculatePos(e.getPoint()));
+				}
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					if(playerTurn)
+						tStone.setVisible(true);
+				}
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					if(playerTurn) {
+						if(!tStone.isVisible())
+							tStone.setVisible(true);
+						translucentStone(calculatePos(e.getPoint()), tStone);
+					}
+				}
+				@Override
+				public void mouseExited(MouseEvent e) {
+					tStone.setVisible(false);
+				}
+			};
+			this.addMouseListener(mouseAdapter);
+			this.addMouseMotionListener(mouseAdapter);
+		}
+	}
+	
+	public void gameStart() {
+		if(isStart)
+			return;
+		
+		// µ¥ÀÌÅÍ Áö¿ì±â
+		stoneList.clear();
+		for(int i=0;i<19;i++)
+			Arrays.fill(stonePos[i], 0);
+		
+		this.removeAll();
+		this.add(tStone);
+		this.revalidate();
+		this.repaint();
+		isStart = true;
+		// need master or slave from data for who's turn
+		playerTurn = true;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -66,34 +124,53 @@ public class GoBoardPanel extends JPanel {
 	    	g.drawImage(board, width, height, 613, 577, null);
 	    }
 	}
-	public void placeStone(Point p) {
-		Point temp = calculatePos(p);
+	
+	public void translucentStone(Point p, JLabel s) {
+		if(p == null)
+			return;
 		
-		if(temp != null) { 
-			int i = stoneList.size() % 2;
-
-			checkRule33();
+		int i = stoneList.size() % 2;
+		
+		// Èæµ¹ ¹éµ¹
+		if(i == 0)
+			s.setIcon(blackStonetrIcon);
+		else
+			s.setIcon(whiteStonetrIcon);
+		
+		s.setBounds(gridXPos[p.x] - 12, gridYPos[p.y] - 12, 25, 25);
+		
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void placeStone(Point p) {
+		if(p == null)
+			return;
+		
+		int i = stoneList.size() % 2;
+		
+		checkRule33();
+		
+		JLabel tempStone = new JLabel();
+		// Èæµ¹ ¹éµ¹
+		if(i == 0)
+			tempStone.setIcon(blackStoneIcon);
+		else
+			tempStone.setIcon(whiteStoneIcon);
 			
-			JLabel tempStone = new JLabel();
-			// Èæµ¹ ¹éµ¹
-			if(i == 0)
-				tempStone.setIcon(blackStoneIcon);
-			else
-				tempStone.setIcon(whiteStoneIcon);
-			
-			tempStone.setBounds(gridXPos[temp.x] - 12, gridYPos[temp.y] - 12, 25, 25);
-			Stone stone = new Stone(temp, stoneList.size()+1, tempStone);
-			stoneList.add(stone);
-			if(i == 0)
-				stonePos[temp.x][temp.y] = 1; //black
-			else
-				stonePos[temp.x][temp.y] = 2; //white
-			this.add(tempStone);
-			this.revalidate();
-			this.repaint();
-			
-			checkFinish(temp.x, temp.y);
-		}
+		tempStone.setBounds(gridXPos[p.x] - 12, gridYPos[p.y] - 12, 25, 25);
+		Stone stone = new Stone(p, stoneList.size()+1, tempStone);
+		stoneList.add(stone);
+		if(i == 0)
+			stonePos[p.x][p.y] = 1; //black
+		else
+			stonePos[p.x][p.y] = 2; //white
+		this.add(tempStone);
+		this.revalidate();
+		this.repaint();
+		
+		checkFinish(p.x, p.y);
+		// playerTurn = false;
 	}
 	
 	private Point calculatePos(Point p) {
@@ -210,7 +287,10 @@ public class GoBoardPanel extends JPanel {
 		}
 	}
 	
-	private void gameFinish() {
+	public void gameFinish() {
+		playerTurn = false;
+		isStart = false;
+		
 		System.out.println("f");
 	}
 }

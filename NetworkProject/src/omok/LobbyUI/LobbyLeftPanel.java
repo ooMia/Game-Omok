@@ -35,7 +35,7 @@ public class LobbyLeftPanel extends JPanel {
 		
 		setUI();
 	}
-		
+	
 	private void setUI() {
 		// goBoardPanel add
 		cons = new GridBagConstraints();

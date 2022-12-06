@@ -13,11 +13,14 @@ public class RoomListPanel extends JPanel {
 	
 	private GridBagConstraints cons;
 	
-	private JLabel title = new JLabel("RooomList");
+	private JLabel title = new JLabel("¹æ ¸ñ·Ï");
+	
+	private int roomNum;
 	
 	public RoomListPanel() {
 		setBackground(Color.white);
 		gridBag = new GridBagLayout();
+		roomNum = 0;
 		
 		int[] rows = new int[7];
 		Arrays.fill(rows, 100);
@@ -36,16 +39,20 @@ public class RoomListPanel extends JPanel {
 		cons.anchor = GridBagConstraints.PAGE_START;
 		gridBag.setConstraints(title, cons);
 		add(title);
-		cons = gbc(0, 1, 1, 1);
-		cons.insets = new Insets(0, 5, 0, 5);	// margin
-		RoomPanel room1 = new RoomPanel();
+
+		addRoom("1234", "adw", 1);
+		addRoom("4125", "www", 2);
+		addRoom("6261", "gar", 2);
+		addRoom("3213", "uawyerw", 1);
+	}
+	
+	public void addRoom(String rID, String rName, int uNum) {
+		cons = gbc(roomNum % 2, roomNum / 2 + 1, 1, 1);
+		roomNum++;
+		cons.insets = new Insets(0, 5, 5, 5);	// margin
+		RoomPanel room1 = new RoomPanel(rID, rName, uNum);
 		gridBag.setConstraints(room1, cons);
 		add(room1);
-		cons =  gbc(1, 1, 1, 1);
-		cons.insets = new Insets(0, 5, 0, 5);	// margin
-		RoomPanel room2 = new RoomPanel();
-		gridBag.setConstraints(room2, cons);
-		add(room2);
 	}
 	
 	private GridBagConstraints gbc(int x, int y, int w, int h) {

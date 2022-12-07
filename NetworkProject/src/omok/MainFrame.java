@@ -18,8 +18,8 @@ public class MainFrame extends JFrame{
 	private final String FRAME_TITLE = "¿À¸ñ";
 	private int mainFrameWidth = 940;
     private int mainFrameHeight = 780;
-	private int loginFrameWidth = 600;
-    private int loginFrameHeight = 400;
+	private int loginFrameWidth = 626;
+    private int loginFrameHeight = 418;
     
     // JFrame Container
     private Container c;
@@ -56,7 +56,7 @@ public class MainFrame extends JFrame{
 	// lobby <<-->> gameroom panel change
 	public void changePanel() {
 		this.remove(mainPanel);
-		mainPanel = new LobbyPanel();
+		mainPanel = new LobbyPanel(this);
 		this.setSize(mainDimension);
 		this.setPreferredSize(mainDimension);
 		this.setLocationRelativeTo(null);

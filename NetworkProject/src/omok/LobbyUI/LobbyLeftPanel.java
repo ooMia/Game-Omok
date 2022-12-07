@@ -18,8 +18,8 @@ public class LobbyLeftPanel extends JPanel {
 	// Constraints for GridBag set
 	private GridBagConstraints cons;
 	// Panels
-	private JPanel roomListPanel = new RoomListPanel();
-	private JPanel chatPanel = new LobbyChatPanel();
+	private RoomListPanel roomListPanel = new RoomListPanel();
+	public LobbyChatPanel chatPanel = new LobbyChatPanel();
 	
 	public LobbyLeftPanel() {
 		// background
@@ -72,8 +72,12 @@ public class LobbyLeftPanel extends JPanel {
 	
 	public void paintComponent(Graphics g)
 	{
-	    super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    super.paintComponent(g2);
 	    if(woodBackground != null)
-	    	g.drawImage(woodBackground, 0, 0, 1000, 780, null);
+	    	g2.drawImage(woodBackground, 0, 0, 1000, 780, null);
 	}
 }

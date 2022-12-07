@@ -8,6 +8,7 @@ import javax.swing.*;
 public class RoomListPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
+	private Image backgroundImage;
 	// layout
 	private GridBagLayout gridBag;
 	
@@ -18,13 +19,15 @@ public class RoomListPanel extends JPanel {
 	private int roomNum;
 	
 	public RoomListPanel() {
-		setBackground(Color.white);
+		//setBackground(Color.white);
+		ImageIcon backIcon = new ImageIcon("./image/roomlist.png");
+		backgroundImage = backIcon.getImage();
 		gridBag = new GridBagLayout();
 		roomNum = 0;
 		
-		int[] rows = new int[7];
-		Arrays.fill(rows, 100);
-		rows[0] = 50;
+		int[] rows = new int[14];
+		Arrays.fill(rows, 40);
+		rows[0] = 20;
 		gridBag.rowHeights = rows;
 		
 		int[] columns = new int[2];
@@ -48,8 +51,11 @@ public class RoomListPanel extends JPanel {
 	
 	public void addRoom(String rID, String rName, int uNum) {
 		cons = gbc(roomNum % 2, roomNum / 2 + 1, 1, 1);
+		if(roomNum%2==0)
+			cons.insets = new Insets(0, 5, 5, 2);
+		else
+			cons.insets = new Insets(0, 2, 5, 5);
 		roomNum++;
-		cons.insets = new Insets(0, 5, 5, 5);	// margin
 		RoomPanel room1 = new RoomPanel(rID, rName, uNum);
 		gridBag.setConstraints(room1, cons);
 		add(room1);
@@ -69,5 +75,17 @@ public class RoomListPanel extends JPanel {
 		//cons.anchor = GridBagConstraints.PAGE_START;
 		cons.anchor = GridBagConstraints.NORTH;
 		return cons;
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		Graphics2D g2 = (Graphics2D) g;
+		
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    super.paintComponent(g2);
+	    
+	    if(backgroundImage != null)
+	    	g2.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
 	}
 }

@@ -107,7 +107,11 @@ public class GoBoardPanel extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    super.paintComponent(g2);
 	    if (board != null)
 	    {
 	    	int x = getWidth();
@@ -121,7 +125,7 @@ public class GoBoardPanel extends JPanel {
 	    	if(y > 577) {
 	    		height = (y - 577)/2;
 	    	}
-	    	g.drawImage(board, width, height, 613, 577, null);
+	    	g2.drawImage(board, width, height, 613, 577, null);
 	    }
 	}
 	

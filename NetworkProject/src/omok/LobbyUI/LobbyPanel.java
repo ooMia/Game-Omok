@@ -1,9 +1,13 @@
 package omok.LobbyUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 import javax.swing.*;
+
+import omok.GameUI.GamePanel;
 
 public class LobbyPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -18,10 +22,14 @@ public class LobbyPanel extends JPanel {
 	private Image woodBackground;
 		
 	// Panels
-	private JPanel leftPanel;
-	private JPanel rightPanel;
-		
-	public LobbyPanel() {
+	private LobbyLeftPanel leftPanel;
+	private LobbyRightPanel rightPanel;
+	
+	// dialog
+	private JDialog dialog;
+	
+	
+	public LobbyPanel(JFrame m) {
 		// background
 		ImageIcon backIcon = new ImageIcon("./image/mainbackground.jpg");
 		woodBackground = backIcon.getImage();
@@ -36,6 +44,17 @@ public class LobbyPanel extends JPanel {
 		
 		leftPanel = new LobbyLeftPanel();
 		rightPanel = new LobbyRightPanel();
+		
+		dialog = new JDialog(m, "방 설정");
+		setDialog();
+		
+		leftPanel.chatPanel.createRoom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				dialog.setVisible(true);
+			}
+		});
 		// UI 생성
 		setUI();
 	}
@@ -74,10 +93,69 @@ public class LobbyPanel extends JPanel {
 		this.add(rightPanel);
 	}
 	
+	public void setDialog() {
+		dialog.setSize(250, 200);
+		dialog.setLayout(null);
+		dialog.setLocationRelativeTo(null);
+		
+		JLabel nameLabel = new JLabel("방이름");
+		JTextField nameField = new JTextField();
+		JButton okBtn = new JButton("만들기");
+		
+		nameLabel.setBounds(18, 10, 100, 30);
+		nameField.setBounds(65, 10, 150, 30);
+		okBtn.setBounds(130, 80, 80, 30);
+		
+		okBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String roomName = nameField.getText().trim();
+				System.out.println(roomName + " 생성");
+				
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						// 위는 플레이어 아래는 옵저버
+						makeRoom();
+					}
+				});
+				
+				dialog.setVisible(false);
+				nameField.setText("");
+			}
+		});
+		
+		dialog.add(nameLabel);
+		dialog.add(nameField);
+		dialog.add(okBtn);
+	}
+	
+	public void makeRoom() {
+		int mainFrameWidth = 940;
+	    int mainFrameHeight = 780;
+		JFrame f;
+		f = new JFrame();
+		Dimension mainDimension = new Dimension(mainFrameWidth, mainFrameHeight);
+		f.setPreferredSize(mainDimension);
+		f.setResizable(false);
+		GamePanel p = new GamePanel(false);
+		
+		f.add(p);
+		f.setVisible(true);
+		f.pack();
+		f.setLocationRelativeTo(null);
+		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	// 프로세스 남지 않게 종료
+	}
+	
 	public void paintComponent(Graphics g)
 	{
-	    super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    super.paintComponent(g2);
 	    if(woodBackground != null)
-	    	g.drawImage(woodBackground, 0, 0, getWidth(), getHeight()+100, null);
+	    	g2.drawImage(woodBackground, 0, 0, getWidth(), getHeight()+100, null);
 	}
 }

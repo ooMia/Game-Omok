@@ -10,6 +10,7 @@ public class Server extends Thread {
 
 	public Server(Integer portNum) throws IOException {
 		this.serverSocket = new ServerSocket(portNum);
+
 	}
 
 	@Override

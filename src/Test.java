@@ -1,9 +1,8 @@
 import com.omok.java.backend.server.Server;
-import com.omok.java.frontend.Client;
-import com.omok.java.frontend.UserLoginForm;
+import com.omok.java.frontend.ui.Client;
+import com.omok.java.frontend.omok.MainFrame;
 
-import java.io.*;
-import java.net.Socket;
+import javax.swing.*;
 
 public class Test {
 	public static void main(String[] args) {
@@ -24,6 +23,13 @@ public class Test {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+
+		JFrame f;
+		f = new MainFrame("127.0.0.1", 30000);
+		f.setVisible(true);
+		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	// 프로세스 남지 않게 종료
+
 
 	}
 }

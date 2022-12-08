@@ -33,8 +33,8 @@ public class ClientService implements Runnable {
 
 		public ServerStreamManager(Socket socket) {
 			try {
-				this.fromClient = new ObjectInputStream( new BufferedInputStream( socket.getInputStream() ));
-				this.toClient = new ObjectOutputStream( new BufferedOutputStream( socket.getOutputStream() ));
+				this.fromClient = new ObjectInputStream( socket.getInputStream() );
+				this.toClient = new ObjectOutputStream( socket.getOutputStream() );
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

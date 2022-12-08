@@ -2,7 +2,6 @@ package com.omok.java.frontend.ui;
 
 import com.omok.java.backend.server.Server;
 import com.omok.java.data.user.UserData;
-import com.omok.java.frontend.ClientView;
 import com.omok.java.frontend.WindowFrame;
 
 import java.net.Socket;

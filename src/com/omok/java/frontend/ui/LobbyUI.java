@@ -5,7 +5,6 @@ import com.omok.java.backend.server.Server;
 import com.omok.java.data.Data;
 import com.omok.java.data.room.RoomData;
 import com.omok.java.data.user.UserData;
-import com.omok.java.frontend.WindowFrame;
 
 import java.io.*;
 import java.net.Socket;

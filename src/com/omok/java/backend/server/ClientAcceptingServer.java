@@ -1,24 +1,33 @@
-package com.omok.java.backend.server;
+package com.omok.Java.Backend.Server;
 
-import com.omok.java.backend.server.Server;
+
+import com.omok.Java.Backend.MessageHandler;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 // Server $ ClientAcceptingServer
 public class ClientAcceptingServer implements Runnable {
 
+	ThreadGroup serverThreadGroup;
 	Server server;
 	ServerSocket serverSocket;
-	ThreadGroup serverThreadGroup;
+	HashMap<Socket, ObjectInputStream> oisMap;
+	HashMap<Socket, ObjectOutputStream> oosMap;
 
-	public ClientAcceptingServer(ThreadGroup serverThreadGroup, Server server, ServerSocket serverSocket) {
-		this.server = server;
-		this.serverSocket = serverSocket;
+	public ClientAcceptingServer(
+			ThreadGroup serverThreadGroup,
+			Server server
+	) {
 		this.serverThreadGroup = serverThreadGroup;
+		this.server = server;
+		this.serverSocket = server.serverSocket;
+		this.oisMap = server.oisMap;
+		this.oosMap = server.oosMap;
 	}
 
 	@Override
@@ -28,56 +37,63 @@ public class ClientAcceptingServer implements Runnable {
 		Socket client;
 		final ThreadGroup clientThreadGroup = new ThreadGroup("Clients");
 
-		try {
-			System.out.println(this.getClass().toString() + "\tWAITING FOR CLIENTS...");
-			client = serverSocket.accept(); // made Thread blocked.
+		while (clientThreadGroup.activeCount() >= 0)
+		{
+			System.out.println(this.getClass() + "\tWAITING FOR CLIENTS...");
+			try {
+				client = serverSocket.accept(); // made Thread blocked.
 
-			new Thread( clientThreadGroup, new MessageHandlerServer(clientThreadGroup, client) ).start();
+				// 초기화
+				oosMap.put(client, new ObjectOutputStream(client.getOutputStream()));
+				oosMap.get(client).flush();
+				oisMap.put(client, new ObjectInputStream(client.getInputStream()));
 
-			System.out.println(client.toString());
+				// accept한 client를 userData 형태로 Server에 전달
+				// 이후 Server는 userList에 추가
+				MessageHandler mh = new ServerMessageHandler( client, getOIS(client), getOOS(client) );
+				mh.routine_Login("");
 
-		} catch (IOException e) {
-			e.printStackTrace();
+			} catch (Exception e) {e.printStackTrace();}
+
 		}
 
-		while (clientThreadGroup.activeCount() >= 0);
+		System.out.println(this.getClass() + "\tEND");
+	}
 
-		System.out.println(this.getClass().toString() + "\tEND");
+	private ObjectOutputStream getOOS(Socket socket) {
+		return oosMap.get(socket);
+	}
+	private ObjectInputStream getOIS(Socket socket) {
+		return oisMap.get(socket);
 	}
 
 
+	// Server $ ClientAcceptingServer $ MessageHandler
+	class ServerMessageHandler implements MessageHandler {
 
-
-
-
-
-	// Server $ ClientAcceptingServer $ MessageHandlerServer
-	class MessageHandlerServer implements Runnable {
-
-		ThreadGroup clientThreadGroup;
 		ObjectInputStream fromClient;
 		ObjectOutputStream toClient;
 
-		public MessageHandlerServer(ThreadGroup clientThreadGroup, Socket client) throws IOException {
-			this.clientThreadGroup = clientThreadGroup;
-			this.fromClient = new ObjectInputStream(  client.getInputStream() );
-			this.toClient = new ObjectOutputStream( client.getOutputStream() );
+		public ServerMessageHandler(
+				Socket socket,
+				ObjectInputStream OIS,
+				ObjectOutputStream OOS
+		) throws IOException {
+			this.fromClient = OIS;
+			this.toClient = OOS;
 		}
 
 		@Override
-		public void run() {
-			System.out.println(this.toString() + "\tSTART");
-
+		public void routine_Login(String id) {
+			String userID = null;
+			String log = "Hello, World!".toUpperCase();
 			try {
-				String msg = new String("Hello, World!").toUpperCase();
-				toClient.writeObject(msg);
+				toClient.writeObject(log);
+				userID = (String) fromClient.readObject();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			while (clientThreadGroup.activeCount() > 0);
-			System.out.println(this.toString() + "\tEND");
-
+			System.out.println(userID);
 		}
 	}
 

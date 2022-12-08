@@ -1,54 +1,34 @@
-package com.omok.java.backend.service;
+package com.omok.Java.Backend.Service;
 
-import com.omok.java.StreamManager;
-import com.omok.java.data.Data;
-import com.omok.java.data.user.UserData;
+import com.omok.Java.Backend.Manager.ServerStreamManager;
+import com.omok.Java.Backend.Manager.StreamManager;
+import com.omok.Java.Data.Data;
+import com.omok.Java.Data.UserData;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-// ìœ ì €ì™€ì˜ í†µì‹ ì„ ì´ê´„í•˜ëŠ” ì„œë¹„ìŠ¤
-// ìœ ì €ê°€ ë¡œê·¸ì¸ì— ì„±ê³µí•˜ë©´ ìƒì„±ë˜ê³ , ë¡œê·¸ì•„ì›ƒ ì‹œê¹Œì§€ ì…ë ¥ì„ ì²˜ë¦¬í•œë‹¤.
-// ë³¸ í´ë˜ìŠ¤ì˜ ì¸ìŠ¤í„´ìŠ¤ëŠ” Thread ê°ì²´ë¡œ ì—…ìºìŠ¤íŒ…í•˜ê³  start ë©”ì†Œë“œë¥¼ í˜¸ì¶œí•˜ì—¬ ì‹¤í–‰í•œë‹¤.
+// À¯Àú¿ÍÀÇ Åë½ÅÀ» ÃÑ°ıÇÏ´Â ¼­ºñ½º
+// À¯Àú°¡ ·Î±×ÀÎ¿¡ ¼º°øÇÏ¸é »ı¼ºµÇ°í, ·Î±×¾Æ¿ô ½Ã±îÁö ÀÔ·ÂÀ» Ã³¸®ÇÑ´Ù.
+// º» Å¬·¡½ºÀÇ ÀÎ½ºÅÏ½º´Â Thread °´Ã¼·Î ¾÷Ä³½ºÆÃÇÏ°í start ¸Ş¼Òµå¸¦ È£ÃâÇÏ¿© ½ÇÇàÇÑ´Ù.
 public class ClientService implements Runnable {
 
-	private final Socket socket;	// ServerSocket.accept()ì— ì˜í•´ í• ë‹¹ëœ ì†Œì¼“
+	private final Socket socket;	// ServerSocket.accept()¿¡ ÀÇÇØ ÇÒ´çµÈ ¼ÒÄÏ
 	private final StreamManager streamManager;
 	private UserData userData;
 
-	public ClientService(Socket socket)  {
+	public ClientService(Socket socket, StreamManager streamManager)  {
 		this.socket = socket;
-		this.streamManager = new ServerStreamManager(socket);
+		this.streamManager = streamManager;
 	}
 
 	@Override
 	public void run() {
+		while(true){
 
-	}
-
-	private class ServerStreamManager implements StreamManager {
-
-		private ObjectInputStream fromClient;
-		private ObjectOutputStream toClient;
-
-		public ServerStreamManager(Socket socket) {
-			try {
-				this.fromClient = new ObjectInputStream( socket.getInputStream() );
-				this.toClient = new ObjectOutputStream( socket.getOutputStream() );
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
-
-		@Override
-		public Data receive() throws IOException, ClassNotFoundException {
-			return (Data) fromClient.readObject();
-		}
-		@Override
-		public void send(Data o) throws IOException {
-			toClient.writeObject(o);
-		}
-
 	}
 
 }

@@ -1,6 +1,8 @@
-package com.omok.java.backend.server;
+package com.omok.Java.Backend.Server;
 
-public class RoomManagingServer extends Thread{
+import java.io.Serializable;
+
+public class RoomManagingServer extends Thread {
 
 	private Server server;
 	public Server getServer() {
@@ -13,7 +15,7 @@ public class RoomManagingServer extends Thread{
 
 	// Singleton Pattern: Initialization On Demand Holder Idiom
 	public static RoomManagingServer getInstance() {
-		return RoomManagingServer.LazyHolder.INSTANCE;
+		return LazyHolder.INSTANCE;
 	}
 	private static class LazyHolder {
 		private static final RoomManagingServer INSTANCE = new RoomManagingServer();

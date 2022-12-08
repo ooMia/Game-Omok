@@ -1,9 +1,14 @@
-package com.omok.java.data;
+package com.omok.Java.Data;
 
 public enum CodeType {
 
+
+
 	LOGIN_STATUS	,
 	LOGOUT_STATUS	,
+	SLEEP_STATUS	,
+	WAKEUP_STATUS	,
+
 
 
 	GET_LIST_USER	,
@@ -31,6 +36,4 @@ public enum CodeType {
 	GET_STACK_STONE_GAME_PLAY,
 	PUT_STONE_GAME_PLAY,
 	WITHDRAW_STONE_GAME_PLAY,
-
-
-	}
+}

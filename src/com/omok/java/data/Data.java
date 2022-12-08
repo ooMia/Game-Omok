@@ -1,7 +1,4 @@
-package com.omok.java.data;
-
-import com.omok.java.data.room.RoomData;
-import com.omok.java.data.user.UserData;
+package com.omok.Java.Data;
 
 import java.io.Serializable;
 

@@ -1,12 +1,8 @@
-package com.omok.java.data.room;
+package com.omok.Java.Data.Room;
 
-import com.omok.java.data.Data;
-import com.omok.java.data.user.UserData;
-import com.omok.java.frontend.ui.UI;
-
-import java.util.List;
+import com.omok.Java.Data.Data;
+import com.omok.Java.UI.Panel.Structure.InnerPanel;
 
 public abstract class RoomData extends Data {
-	UI ui;
-	abstract List<UserData> getUserList(UI ui);
+	InnerPanel innerPanel;
 }

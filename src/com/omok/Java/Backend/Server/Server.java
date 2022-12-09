@@ -1,5 +1,9 @@
 package com.omok.Java.Backend.Server;
 
+import com.omok.Java.Backend.Service.DataHandler;
+import com.omok.Java.ServerMain;
+import com.omok.Java.UI.Frame.ServerFrame;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,21 +11,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class Server extends Thread {
+public abstract class Server extends Thread implements DataHandler {
 
-	public static final String host = "127.0.0.1";
-	public static final Integer portNum = 30002;
+	private final String host = ServerMain.host;
+	private final Integer portNum = ServerMain.portNum;
+	private final ThreadGroup serverThreadGroup = ServerMain.serverThreadGroup;
+	private final ThreadGroup clientThreadGroup = ServerMain.clientThreadGroup;
+	private  ServerSocket serverSocket = ServerMain.serverSocket;
+	private  HashMap<String, Socket> userNicknameSocketHashMap = ServerMain.userNicknameSocketHashMap;
+	private  HashMap<Socket, ObjectInputStream> userSocketOISHashMap = ServerMain.userSocketOISHashMap;
+	private  HashMap<Socket, ObjectOutputStream> userSocketOOSHashMap = ServerMain.userSocketOOSHashMap;
 
-	public final ThreadGroup servers = new ThreadGroup("Server");
 
-	protected ServerSocket serverSocket;
-	protected HashMap<Socket, ObjectInputStream> oisMap;
-	protected HashMap<Socket, ObjectOutputStream> oosMap;
 
-	public Server(Integer portNum) throws IOException {
-		this.serverSocket = new ServerSocket(portNum);
-		this.oisMap = new HashMap<>();
-		this.oosMap = new HashMap<>();
+	public Server(ServerFrame serverFrame) {
+
 	}
 
 	@Override

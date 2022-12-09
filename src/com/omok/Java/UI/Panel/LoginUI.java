@@ -5,9 +5,9 @@ import com.omok.Java.Backend.Service.ClientRoutineHandlerService;
 import com.omok.Java.Backend.Service.RoutineHandler;
 import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
-import com.omok.Java.Data.Room.RoomData;
 import com.omok.Java.Data.User.UserData;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
+import com.omok.Java.UI.WindowFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +25,9 @@ public class LoginUI extends InnerPanel {
 
 	private Image loginBackground;
 
-	public LoginUI() {
+	public LoginUI(WindowFrame windowFrame)
+	{
+		super(windowFrame);
 		setLayout(null);
 
 		// create objects
@@ -61,12 +63,9 @@ public class LoginUI extends InnerPanel {
 		if(userNickname.length() == 0) { return; }
 
 		try {
-			super.setSocket(new Socket(Server.host, Server.portNum));
-			// 이 경우, "lazy init"을 위해 의도적으로 UI 로직 내에서 호출하였으나
-			// 기본적으로 setSocket 초기화는 WindowFrame 생성 시점에서 마무리하기를 권장
-			// 초기 상태 socket=null 초기화 이후에는 다시 변경 불가
 
-			UserData userData = new UserData(super.getSocket(), new RoomData(this));
+
+			UserData userData = new UserData(null,"",CodeType.SLEEP_STATUS);
 			RoutineHandler mh = new ClientRoutineHandlerService( super.getSocket(), super.getOIS(), super.getOOS() );
 			mh.routine_Login(userData);
 		} catch (Exception e) {e.printStackTrace(); return;}
@@ -84,6 +83,16 @@ public class LoginUI extends InnerPanel {
 		super.paintComponent(g2);
 		if(loginBackground != null)
 			g2.drawImage(loginBackground, 0, 0, null);
+	}
+
+	@Override
+	public void sendData(CodeType codeType, Data data) {
+
+	}
+
+	@Override
+	public void onReceiveData(Data data) {
+
 	}
 }
 

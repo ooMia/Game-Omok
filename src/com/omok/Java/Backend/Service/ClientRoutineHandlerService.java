@@ -1,11 +1,9 @@
 package com.omok.Java.Backend.Service;
 
 import com.omok.Java.Data.Data;
-import com.omok.Java.Data.Room.RoomData;
 import com.omok.Java.Data.User.UserData;
 import com.omok.Java.UI.Panel.LoginUI;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;

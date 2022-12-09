@@ -9,13 +9,10 @@ import java.awt.*;
 public class ClientMain {
 	public static void main(String[] args)
 	{
-		ClientFrame f = new ClientFrame(
-				"LoginUI",
-				new Dimension(626, 418)
-		);
-		InnerPanel p = new LoginUI();
-		p.setFrame(f);
-		f.setInnerPanel(p);
-		f.setVisible(true);
+		ClientFrame clientFrame = new ClientFrame("LoginUI");
+		InnerPanel p = new LoginUI(clientFrame);
+		clientFrame.setPreferredSize(new Dimension(626, 418));
+		clientFrame.setInnerPanel(p);
+		clientFrame.setVisible(true);
 	}
 }

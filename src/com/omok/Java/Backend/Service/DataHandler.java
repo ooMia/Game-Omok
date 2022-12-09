@@ -4,7 +4,6 @@ import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
 
 public interface DataHandler {
-
-	void definedBehavior(CodeType type, Data data);
-
+	void sendData(CodeType codeType, Data data);
+	void onReceiveData(Data data);
 }

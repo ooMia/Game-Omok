@@ -2,7 +2,9 @@ package com.omok.Java.Backend.Server;
 
 
 import com.omok.Java.Backend.Service.RoutineHandler;
+import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
+import com.omok.Java.ServerMain;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,19 +14,27 @@ import java.net.Socket;
 import java.util.HashMap;
 
 // Server $ ClientAcceptingServer
-public class ClientAcceptingServer implements Runnable {
+public class ClientAcceptingServer extends Server {
 
-	final ThreadGroup clientThreadGroup = new ThreadGroup("Clients");
-	ThreadGroup serverThreadGroup;
-	Server server;
+	public static final Integer portNum = 30000;
+	public static final String host = "127.0.0.1";
+	public static final ThreadGroup serverThreadGroup = new ThreadGroup("Server");
+	public static final ThreadGroup clientThreadGroup = new ThreadGroup("Client");
+
+	public static ServerSocket serverSocket;
+	public static HashMap<String, Socket> userNicknameSocketHashMap;
+	public static HashMap<Socket, ObjectInputStream> userSocketOISHashMap;
+	public static HashMap<Socket, ObjectOutputStream> userSocketOOSHashMap;
+
+
+
 	ServerSocket serverSocket;
-	HashMap<Socket, ObjectInputStream> oisMap;
-	HashMap<Socket, ObjectOutputStream> oosMap;
 
 	public ClientAcceptingServer(
 			ThreadGroup serverThreadGroup,
 			Server server
 	) {
+		super();
 		this.serverThreadGroup = serverThreadGroup;
 		this.server = server;
 		this.serverSocket = server.serverSocket;
@@ -47,23 +57,21 @@ public class ClientAcceptingServer implements Runnable {
 				oosMap.get(client).flush();
 				oisMap.put(client, new ObjectInputStream(client.getInputStream()));
 
-				// accept한 client를 userData 형태로 Server에 전달
-				// 이후 Server는 userList에 추가
-				RoutineHandler mh = new ServerRoutineHandler( client, getOIS(client), getOOS(client) );
-				mh.routine_Login(null);
 			}
 			catch (Exception e) {e.printStackTrace();}
 		}
 		System.out.println(this.getClass() + "\tEND");
 	}
 
-	private ObjectOutputStream getOOS(Socket socket) {
-		return oosMap.get(socket);
-	}
-	private ObjectInputStream getOIS(Socket socket) {
-		return oisMap.get(socket);
+	@Override
+	public void sendData(CodeType codeType, Data data) {
+
 	}
 
+	@Override
+	public void onReceiveData(Data data) {
+
+	}
 
 	// Server $ ClientAcceptingServer $ RoutineHandler
 	class ServerRoutineHandler implements RoutineHandler {

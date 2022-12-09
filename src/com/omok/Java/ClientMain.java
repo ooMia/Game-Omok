@@ -7,8 +7,8 @@ import com.omok.Java.UI.Panel.Structure.InnerPanel;
 import java.awt.*;
 
 public class ClientMain {
-	public static void main(String[] args) {
-
+	public static void main(String[] args)
+	{
 		ClientFrame f = new ClientFrame(
 				"LoginUI",
 				new Dimension(626, 418)
@@ -17,6 +17,5 @@ public class ClientMain {
 		p.setFrame(f);
 		f.setInnerPanel(p);
 		f.setVisible(true);
-
 	}
 }

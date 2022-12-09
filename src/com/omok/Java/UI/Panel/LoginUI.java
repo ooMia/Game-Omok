@@ -3,6 +3,8 @@ package com.omok.Java.UI.Panel;
 import com.omok.Java.Backend.Server.Server;
 import com.omok.Java.Backend.Service.ClientRoutineHandlerService;
 import com.omok.Java.Backend.Service.RoutineHandler;
+import com.omok.Java.Data.CodeType;
+import com.omok.Java.Data.Data;
 import com.omok.Java.Data.Room.RoomData;
 import com.omok.Java.Data.User.UserData;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
@@ -69,7 +71,7 @@ public class LoginUI extends InnerPanel {
 			mh.routine_Login(userData);
 		} catch (Exception e) {e.printStackTrace(); return;}
 
-		super.updateInnerPanel(LOGIN_STATUS);
+		super.definedBehavior(LOGIN_STATUS, null);
 	}
 
 	@Override

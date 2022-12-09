@@ -9,30 +9,24 @@ import java.util.HashMap;
 
 public class ServerStreamManager implements StreamManager {
 
-	private HashMap<Integer, UserData> userMap;
-
-
+	private HashMap<Socket, UserData> userMap;
 	private ObjectInputStream fromClient;
 	private ObjectOutputStream toClient;
 
 	public ServerStreamManager(
 			Socket serverSocket,
+			HashMap<Socket, UserData> userMap,
 			ObjectInputStream fromClient,
 			ObjectOutputStream toClient)
 	{
-		userMap = new HashMap<>();
-		try {
-			this.fromClient = fromClient;
-			this.toClient = toClient;
-			toClient.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.userMap = userMap;
+		this.fromClient = fromClient;
+		this.toClient = toClient;
 	}
 
 	public void addUser(UserData user){
 		try {
-			userMap.put(user.userID, user);
+			userMap.put(user.userSocket, user);
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 

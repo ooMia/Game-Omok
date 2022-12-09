@@ -2,6 +2,7 @@ package com.omok.Java.Backend.Server;
 
 
 import com.omok.Java.Backend.Service.RoutineHandler;
+import com.omok.Java.Data.Data;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 // Server $ ClientAcceptingServer
 public class ClientAcceptingServer implements Runnable {
 
+	final ThreadGroup clientThreadGroup = new ThreadGroup("Clients");
 	ThreadGroup serverThreadGroup;
 	Server server;
 	ServerSocket serverSocket;
@@ -33,15 +35,11 @@ public class ClientAcceptingServer implements Runnable {
 	@Override
 	public void run() {
 		System.out.println(this.getClass().toString() + "\tSTART");
-
-		Socket client;
-		final ThreadGroup clientThreadGroup = new ThreadGroup("Clients");
-
 		while (clientThreadGroup.activeCount() >= 0)
 		{
 			System.out.println(this.getClass() + "\tWAITING FOR CLIENTS...");
 			try {
-				client = serverSocket.accept(); // made Thread blocked.
+				Socket client = serverSocket.accept(); // made Thread blocked.
 				System.out.print(this.getClass() + "\tUSER ACCEPTED... ");
 
 				// 초기화
@@ -52,12 +50,10 @@ public class ClientAcceptingServer implements Runnable {
 				// accept한 client를 userData 형태로 Server에 전달
 				// 이후 Server는 userList에 추가
 				RoutineHandler mh = new ServerRoutineHandler( client, getOIS(client), getOOS(client) );
-				mh.routine_Login("");
-
-			} catch (Exception e) {e.printStackTrace();}
-
+				mh.routine_Login(null);
+			}
+			catch (Exception e) {e.printStackTrace();}
 		}
-
 		System.out.println(this.getClass() + "\tEND");
 	}
 
@@ -85,12 +81,12 @@ public class ClientAcceptingServer implements Runnable {
 		}
 
 		@Override
-		public void routine_Login(String id) {
+		public void routine_Login(Data login) throws IOException, ClassNotFoundException {
 			String userID = null;
 			String log = "Hello, World!".toUpperCase();
 			try {
-				toClient.writeObject(log);
 				userID = (String) fromClient.readObject();
+				toClient.writeObject(log);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

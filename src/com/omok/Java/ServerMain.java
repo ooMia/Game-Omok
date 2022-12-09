@@ -23,7 +23,7 @@ public class ServerMain {
 		ServerFrame f = new ServerFrame(
 				"HostConfigurePanel",
 				new Dimension(940, 780)
-		);1
+		);
 
 		int GameRoomUI_columns[] = new int[10];
 		Arrays.fill(GameRoomUI_columns, 94);

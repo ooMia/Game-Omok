@@ -1,7 +1,7 @@
 package com.omok.Java.Backend.Manager;
 
 import com.omok.Java.Data.Data;
-import com.omok.Java.Data.UserData;
+import com.omok.Java.Data.User.UserData;
 
 import java.io.*;
 import java.net.Socket;

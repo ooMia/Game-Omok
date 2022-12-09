@@ -1,19 +1,19 @@
 package com.omok.Java.UI.Panel;
 
-import com.omok.Java.Backend.MessageHandler;
-import com.omok.Java.Backend.Server.ClientAcceptingServer;
-import com.omok.Java.Data.CodeType;
+import com.omok.Java.Backend.Server.Server;
+import com.omok.Java.Backend.Service.ClientRoutineHandlerService;
+import com.omok.Java.Backend.Service.RoutineHandler;
+import com.omok.Java.Data.Room.RoomData;
+import com.omok.Java.Data.User.UserData;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
-import com.omok.Java.UI.WindowFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import static com.omok.Java.Data.CodeType.LOGIN_STATUS;
 
 public class LoginUI extends InnerPanel {
 
@@ -51,33 +51,26 @@ public class LoginUI extends InnerPanel {
 		// add
 		add(textField_nickname);
 		add(button_login);
-
 	}
 
 	public void tryLogin() {
 
-		String id = textField_nickname.getText().trim();
-		if(id.length() == 0) { return; }
+		String userNickname = textField_nickname.getText().trim();
+		if(userNickname.length() == 0) { return; }
 
-		// socket 접속 시도
 		try {
-			String host = "127.0.0.1";
-			final Integer portNum = 30002;
+			super.setSocket(new Socket(Server.host, Server.portNum));
+			// 이 경우, "lazy init"을 위해 의도적으로 UI 로직 내에서 호출하였으나
+			// 기본적으로 setSocket 초기화는 WindowFrame 생성 시점에서 마무리하기를 권장
+			// 초기 상태 socket=null 초기화 이후에는 다시 변경 불가
 
-			Socket socket = new Socket(host, portNum);
-			System.out.println(socket);
-			super.setSocket(socket);
-			System.out.println("setSocket: "+socket);
-
-			System.out.println(super.getOIS().toString() + super.getOOS().toString());
-//			MessageHandler mh = new ClientMessageHandler( socket, super.getOIS(), super.getOOS() );
-//			mh.routine_Login(id);
-
+			UserData userData = new UserData(super.getSocket(), new RoomData(this));
+			RoutineHandler mh = new ClientRoutineHandlerService( super.getSocket(), super.getOIS(), super.getOOS() );
+			mh.routine_Login(userData);
 		} catch (Exception e) {e.printStackTrace(); return;}
 
-		super.updateInnerPanel(CodeType.LOGIN_STATUS);
-
-}
+		super.updateInnerPanel(LOGIN_STATUS);
+	}
 
 	@Override
 	public void paintComponent(Graphics g)
@@ -90,27 +83,5 @@ public class LoginUI extends InnerPanel {
 		if(loginBackground != null)
 			g2.drawImage(loginBackground, 0, 0, null);
 	}
-
-private class ClientMessageHandler implements MessageHandler {
-
-	ObjectInputStream fromServer;
-	ObjectOutputStream toServer;
-
-	public ClientMessageHandler(
-			Socket socket,
-			ObjectInputStream fromServer,
-			ObjectOutputStream toServer
-	) throws IOException {
-		this.fromServer = fromServer;
-		this.toServer = toServer;
-	}
-
-	@Override
-	public void routine_Login(String id) throws IOException, ClassNotFoundException {
-		String msg = (String) fromServer.readObject();
-		System.out.println(msg); // HELLO WORLD
-		toServer.writeObject(id); // SEND USERID
-	}
-}
 }
 

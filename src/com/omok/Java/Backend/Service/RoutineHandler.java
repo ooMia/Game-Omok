@@ -5,6 +5,5 @@ import com.omok.Java.UI.WindowFrame;
 
 public abstract class RoutineHandler extends Thread{
 
-	public WindowFrame windowFrame;
-
+	protected Object obj;
 }

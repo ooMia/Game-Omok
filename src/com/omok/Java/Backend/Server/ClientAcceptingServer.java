@@ -51,12 +51,6 @@ public class ClientAcceptingServer extends Server
 				idSocketMap.put(id, client);
 				System.out.println( String.format("USER %s", id) );
 
-				threadMap.put(client, new Thread(
-						ServerMain.clientThreadGroup,
-						new ServerLogUI.ServerRoutineHandler(
-								client, oosMap.get(client), oisMap.get(client))));
-				threadMap.get(client).start();
-
 			}
 			catch (Exception e) {e.printStackTrace();}
 		}

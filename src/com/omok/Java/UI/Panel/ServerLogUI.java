@@ -96,9 +96,10 @@ public class ServerLogUI extends InnerPanel
 		public static ObjectOutputStream oos;
 		public static ObjectInputStream ois;
 		public static String nickname;
+		public static ServerFrame frame;
 
 		public ServerRoutineHandler(Socket socket, ObjectOutputStream oos, ObjectInputStream ois) throws IOException, ClassNotFoundException {
-			this.windowFrame = ServerLogUI.frame;
+			this.frame = ServerLogUI.frame;
 			this.socket = socket;
 			this.oos = oos;
 			this.ois = ois;
@@ -108,6 +109,21 @@ public class ServerLogUI extends InnerPanel
 		@Override
 		public void run() {
 			super.run();
+
+			System.out.println(this.getClass().toString() + "\tSTART");
+
+			while (ServerMain.clientThreadGroup.activeCount() >= 0)
+			{
+				System.out.println(this.getClass() + "\tWAITING FOR INPUTS...");
+				try {
+					System.out.println(this.getClass().toString() + ois.readObject().toString());
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+			System.out.println(this.getClass() + "\tEND");
 		}
 
 

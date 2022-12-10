@@ -9,15 +9,9 @@ import javax.swing.*;
 public class LobbyRightPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	// layout
 	private GridBagLayout gridBag;
-	
-	// background
 	private Image woodBackground;
-	
-	// Constraints for GridBag set
 	private GridBagConstraints cons;
-	// Panels
 	private JPanel userList;
 	private JPanel playerInfo;
 	

@@ -11,16 +11,16 @@ public class LobbyLeftPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	// layout
-	private GridBagLayout gridBag;
+	public static  GridBagLayout gridBag;
 	
 	// background
 	private Image woodBackground;
 	
 	// Constraints for GridBag set
-	private GridBagConstraints cons;
+	public static GridBagConstraints cons;
 	// Panels
-	private RoomListPanel roomListPanel = new RoomListPanel();
-	public LobbyChatPanel chatPanel = new LobbyChatPanel();
+	public static  RoomListPanel roomListPanel = new RoomListPanel();
+	public static  LobbyChatPanel chatPanel = new LobbyChatPanel();
 	
 	public LobbyLeftPanel() {
 		// background

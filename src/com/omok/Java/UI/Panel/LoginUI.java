@@ -97,11 +97,7 @@ public class LoginUI extends InnerPanel {
 
 	@Override
 	public void sendData(CodeType codeType, Data data) {
-		switch (codeType)
-		{
-			// fetch socket to frame
-			case ON_LOGIN -> frame.sendData(ON_LOGIN, data);
-		}
+
 	}
 
 	@Override
@@ -109,12 +105,5 @@ public class LoginUI extends InnerPanel {
 		frame.onReceiveData(data, frame);
 	}
 
-
-	private class LoginRoutineHandler extends RoutineHandler {
-
-		public LoginRoutineHandler() {
-			this.windowFrame = LoginUI.frame;
-		}
-	}
 }
 

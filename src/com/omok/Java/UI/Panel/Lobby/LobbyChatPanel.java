@@ -1,6 +1,12 @@
 package com.omok.Java.UI.Panel.Lobby;
 
+import com.omok.Java.Data.CodeType;
+import com.omok.Java.Data.Data;
+import com.omok.Java.UI.Panel.LobbyUI;
+
 import java.awt.*;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.*;
 
@@ -75,7 +81,19 @@ public class LobbyChatPanel extends JPanel {
 		refreshList = new JButton("새로고침");
 		createRoom = new JButton("방만들기");
 		directJoin = new JButton("바로가기");
-		
+
+		AtomicInteger i = new AtomicInteger();
+		createRoom.addActionListener(e -> {
+			try {
+				RoomPanel roomPanel = new RoomPanel(i.incrementAndGet()+"","room"+i, 1);
+				LobbyUI.frame.oos.writeObject(new Data(roomPanel));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		});
+
+
+
 		rightPanel.add(refreshList);
 		rightPanel.add(createRoom);
 		rightPanel.add(directJoin);

@@ -45,8 +45,9 @@ public class GameRoomUI extends DefaultInnerPanel {
 
 	private class GameRoomRoutineHandler extends RoutineHandler {
 
+		private ClientFrame frame;
 		public GameRoomRoutineHandler() {
-			this.windowFrame = GameRoomUI.frame;
+			frame = GameRoomUI.frame;
 		}
 	}
 }

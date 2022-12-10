@@ -7,16 +7,24 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public class RoomListPanel extends JPanel {
-	private static final long serialVersionUID = 1L;
-	
+	public static final long serialVersionUID = 1L;
+
 	private Image backgroundImage;
 	// layout
 	private GridBagLayout gridBag;
-	
-	private GridBagConstraints cons;
-	
+
+	public GridBagLayout getGridBag() {
+		return gridBag;
+	}
+
+	public GridBagConstraints cons;
+
+	public GridBagConstraints getCons() {
+		return cons;
+	}
+
 	private JLabel title = new JLabel("¹æ ¸ñ·Ï");
-	
+
 	private int roomNum;
 	
 	public RoomListPanel() {
@@ -44,12 +52,8 @@ public class RoomListPanel extends JPanel {
 		gridBag.setConstraints(title, cons);
 		add(title);
 
-		addRoom("1234", "adw", 1);
-		addRoom("4125", "www", 2);
-		addRoom("6261", "gar", 2);
-		addRoom("3213", "uawyerw", 1);
 	}
-	
+
 	public void addRoom(String rID, String rName, int uNum) {
 		cons = gbc(roomNum % 2, roomNum / 2 + 1, 1, 1);
 		if(roomNum%2==0)
@@ -88,5 +92,16 @@ public class RoomListPanel extends JPanel {
 	    
 	    if(backgroundImage != null)
 	    	g2.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
+	}
+
+	public void addRoom(RoomPanel obj) {
+		cons = gbc(roomNum % 2, roomNum / 2 + 1, 1, 1);
+		if(roomNum%2==0)
+			cons.insets = new Insets(0, 5, 5, 2);
+		else
+			cons.insets = new Insets(0, 2, 5, 5);
+		roomNum++;
+		gridBag.setConstraints(obj, cons);
+		add(obj);
 	}
 }

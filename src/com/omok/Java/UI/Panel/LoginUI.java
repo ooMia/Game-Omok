@@ -1,21 +1,19 @@
 package com.omok.Java.UI.Panel;
 
-import com.omok.Java.Backend.Server.Server;
-import com.omok.Java.Backend.Service.ClientRoutineHandlerService;
-import com.omok.Java.Backend.Service.RoutineHandler;
 import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
-import com.omok.Java.Data.User.UserData;
+import com.omok.Java.ServerMain;
+import com.omok.Java.UI.Frame.ClientFrame;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
-import com.omok.Java.UI.WindowFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.net.Socket;
 
-import static com.omok.Java.Data.CodeType.LOGIN_STATUS;
+import static com.omok.Java.Data.CodeType.ON_LOGIN;
 
 public class LoginUI extends InnerPanel {
 
@@ -25,9 +23,12 @@ public class LoginUI extends InnerPanel {
 
 	private Image loginBackground;
 
-	public LoginUI(WindowFrame windowFrame)
+	private ClientFrame frame;
+
+	public LoginUI(ClientFrame clientFrame)
 	{
-		super(windowFrame);
+		super(clientFrame);
+		this.frame = clientFrame;
 		setLayout(null);
 
 		// create objects
@@ -57,20 +58,17 @@ public class LoginUI extends InnerPanel {
 		add(button_login);
 	}
 
-	public void tryLogin() {
-
+	public void tryLogin()
+	{
 		String userNickname = textField_nickname.getText().trim();
-		if(userNickname.length() == 0) { return; }
-
-		try {
-
-
-			UserData userData = new UserData(null,"",CodeType.SLEEP_STATUS);
-			RoutineHandler mh = new ClientRoutineHandlerService( super.getSocket(), super.getOIS(), super.getOOS() );
-			mh.routine_Login(userData);
-		} catch (Exception e) {e.printStackTrace(); return;}
-
-		super.definedBehavior(LOGIN_STATUS, null);
+		if (userNickname.length() != 0) {
+			try {
+				Socket socket = new Socket(ServerMain.host, ServerMain.portNum);
+				sendData(ON_LOGIN, new Data(socket));
+			} catch (IOException e) {
+				e.printStackTrace(); return;
+			}
+		}
 	}
 
 	@Override
@@ -87,7 +85,11 @@ public class LoginUI extends InnerPanel {
 
 	@Override
 	public void sendData(CodeType codeType, Data data) {
-
+		switch (codeType)
+		{
+			// fetch socket to frame
+			case ON_LOGIN -> frame.sendData(ON_LOGIN, data);
+		}
 	}
 
 	@Override

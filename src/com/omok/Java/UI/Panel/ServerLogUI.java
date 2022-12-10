@@ -9,12 +9,7 @@ import com.omok.Java.UI.WindowFrame;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Vector;
 
 public class ServerLogUI extends InnerPanel
 {
@@ -49,11 +44,7 @@ public class ServerLogUI extends InnerPanel
 
 		JButton btnServerStart = new JButton("Server Start");
 		btnServerStart.addActionListener(e -> {
-			try {
-				socket = new ServerSocket(Integer.parseInt(txtPortNumber.getText()));
-			} catch (NumberFormatException | IOException e1) {
-				e1.printStackTrace();
-			}
+
 			serverLog("Chat Server Running..");
 			btnServerStart.setText("Chat Server Running..");
 			btnServerStart.setEnabled(false); // 서버를 더이상 실행시키지 못 하게 막는다
@@ -90,49 +81,5 @@ public class ServerLogUI extends InnerPanel
 	}
 
 
-	class UserService extends Thread
-	{
-		private ObjectInputStream ois;
-		private ObjectOutputStream oos;
 
-		private Socket client_socket;
-		private Vector<UserService> user_vc;
-
-		public String UserName = "";
-		public String UserStatus;
-
-
-		// 유저의 콘솔로 출력
-		private void sendData(String str) {
-			System.out.println(str);
-		}
-
-		// sender -> (data) -> receiver
-		public void sendData(Data data) {
-			switch (data.codeType){
-				case TO_ALL_USER -> {}
-				case TO_EXCEPT_USER -> {}
-				case TO_MEMBERS_USER -> {}
-				case TO_OTHERS_USER -> {}
-				case TO_SOME_USER -> {}
-				case TO_ONE_USER -> {}
-				default -> { sendData("UNDEFINED MESSAGE TYPE: " + data.toString()); }
-			}
-		}
-
-		//		public void Login() {		}
-
-//		public void Logout() {		}
-
-		// 귓속말 전송
-//		public void WritePrivate(String msg) {		}
-
-//		public void WriteChatMsg(Data data) {		}
-
-//		public Data ReadChatMsg() {		}
-
-		public void run() {
-
-		} // run
-	}
 }

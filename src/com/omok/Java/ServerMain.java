@@ -1,6 +1,8 @@
 package com.omok.Java;
 
 import com.omok.Java.Backend.Server.ClientAcceptingServer;
+import com.omok.Java.Backend.Server.DataHandlingServer;
+import com.omok.Java.Data.CodeType;
 import com.omok.Java.UI.Frame.ServerFrame;
 import com.omok.Java.UI.Panel.ServerLogUI;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
@@ -23,6 +25,7 @@ public class ServerMain {
 	public static HashMap<String, Socket> userNicknameSocketHashMap;
 	public static HashMap<Socket, ObjectInputStream> userSocketOISHashMap;
 	public static HashMap<Socket, ObjectOutputStream> userSocketOOSHashMap;
+	public static HashMap<Socket, Thread> userSocketThreadMap;
 
 	public static void main(String[] args) throws IOException
 	{
@@ -30,14 +33,13 @@ public class ServerMain {
 		userNicknameSocketHashMap = new HashMap<>();
 		userSocketOISHashMap = new HashMap<>();
 		userSocketOOSHashMap = new HashMap<>();
-
-		// run server threads
-		new Thread(new ClientAcceptingServer(serverThreadGroup, ))
+		userSocketThreadMap = new HashMap<>();
 
 		ServerFrame serverFrame = new ServerFrame("HostConfigurePanel");
-		InnerPanel innerPanel = new ServerLogUI(serverFrame);
-		serverFrame.setPreferredSize(new Dimension(338, 440));
-		serverFrame.setInnerPanel(innerPanel);
-		serverFrame.setVisible(true);
+		serverFrame.setInnerPanel(CodeType.ON_START);
+
+		// run server threads
+		new Thread(serverThreadGroup, new ClientAcceptingServer(serverFrame));
+		new Thread(serverThreadGroup, new DataHandlingServer(serverFrame));
 	}
 }

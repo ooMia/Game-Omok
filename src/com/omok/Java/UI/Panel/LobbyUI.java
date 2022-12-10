@@ -1,15 +1,32 @@
 package com.omok.Java.UI.Panel;
 
+import com.omok.Java.Data.CodeType;
+import com.omok.Java.Data.Data;
+import com.omok.Java.UI.Frame.ClientFrame;
+import com.omok.Java.UI.Panel.Lobby.LobbyLeftPanel;
+import com.omok.Java.UI.Panel.Lobby.LobbyRightPanel;
 import com.omok.Java.UI.Panel.Structure.DefaultInnerPanel;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class LobbyUI extends DefaultInnerPanel {
 
-	public LobbyUI(JPanel leftPanel, JPanel rightPanel, Image background, int[] gridBagColumnWidths) {
-		super(leftPanel, rightPanel, background, gridBagColumnWidths);
+	public LobbyUI(ClientFrame clientFrame) {
+		super(
+				clientFrame,
+				new LobbyLeftPanel(),
+				new LobbyRightPanel(),
+				null,
+				null
+		);
 	}
 
+	@Override
+	public void sendData(CodeType codeType, Data data) {
+
+	}
+
+	@Override
+	public void onReceiveData(Data data) {
+
+	}
 }
 

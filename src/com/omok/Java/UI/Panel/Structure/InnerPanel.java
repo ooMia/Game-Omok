@@ -8,8 +8,13 @@ import javax.swing.*;
 // only one InnerPanel can be shown above for each WindowFrame
 // can change InnerPanel by calling function setView() in WindowFrame
 public abstract class InnerPanel extends JPanel implements DataHandler {
-	private WindowFrame frame;
-	public InnerPanel(WindowFrame frame) {
-		this.frame = frame;
+	protected WindowFrame windowFrame;
+
+	public InnerPanel(WindowFrame windowFrame) {
+		this.windowFrame = windowFrame;
 	}
+
+//	public void setWindowFrame(WindowFrame windowFrame){
+//		this.windowFrame=windowFrame;
+//	}
 }

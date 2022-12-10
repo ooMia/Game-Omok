@@ -1,5 +1,7 @@
 package com.omok.Java.UI.Panel.Structure;
 
+import com.omok.Java.UI.WindowFrame;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,7 +15,8 @@ public abstract class DefaultInnerPanel extends InnerPanel {
 	private Image woodBackground;
 	private GridBagLayout gridBag;
 
-	public DefaultInnerPanel(JPanel leftPanel, JPanel rightPanel, Image background, int[] gridBagColumnWidths) {
+	public DefaultInnerPanel(WindowFrame windowFrame, JPanel leftPanel, JPanel rightPanel, Image background, int[] gridBagColumnWidths) {
+		super(windowFrame);
 
 		this.leftPanel = leftPanel;
 		this.rightPanel = rightPanel;

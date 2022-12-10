@@ -33,10 +33,9 @@ public abstract class Server extends Thread implements DataHandler {
 		System.out.println(this.toString() + "\tSTART");
 
 		System.out.println(this.toString() + "\tRUNNING");
-		new Thread( servers, new ClientAcceptingServer(servers, this) ).start();
 
 
-		while(servers.activeCount() > 0);
+		while(serverThreadGroup.activeCount() > 0);
 		System.out.println(this.toString() + "\tEND");
 	}
 

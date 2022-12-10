@@ -2,10 +2,10 @@ package com.omok.Java.Data;
 
 import java.io.Serializable;
 
-public abstract class Data implements Serializable {
-	public CodeType codeType;
+public class Data implements Serializable {
+	public Object obj;
 
-	public Data(CodeType codeType) {
-		this.codeType = codeType;
+	public Data(Object obj) {
+		this.obj = obj;
 	}
 }

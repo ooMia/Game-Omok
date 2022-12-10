@@ -1,8 +1,9 @@
 package com.omok.Java.Data;
 
 public enum CodeType {
-
-
+	ON_START,
+	ON_LOGIN,
+	ON_LOGOUT,
 
 	LOGIN_STATUS	,
 	LOGOUT_STATUS	,

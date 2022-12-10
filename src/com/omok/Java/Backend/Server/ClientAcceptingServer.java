@@ -1,11 +1,12 @@
 package com.omok.Java.Backend.Server;
 
 
-import com.omok.Java.Backend.Service.ClientService;
 import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
 import com.omok.Java.ServerMain;
 import com.omok.Java.UI.Frame.ServerFrame;
+import com.omok.Java.UI.Panel.ServerLogUI;
+import com.omok.Java.UI.WindowFrame;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,9 +17,6 @@ import java.util.HashMap;
 // Server $ ClientAcceptingServer
 public class ClientAcceptingServer extends Server
 {
-	private ThreadGroup serverThreadGroup = new ThreadGroup("Server");
-	private ThreadGroup clientThreadGroup = new ThreadGroup("Client");
-
 	private ServerSocket serverSocket;
 	private HashMap<String, Socket> idSocketMap;
 	private HashMap<Socket, ObjectInputStream> oisMap;
@@ -37,7 +35,7 @@ public class ClientAcceptingServer extends Server
 	@Override
 	public void run() {
 		System.out.println(this.getClass().toString() + "\tSTART");
-		while (serverThreadGroup.activeCount() > 1)
+		while (serverThreadGroup.activeCount() >= 0)
 		{
 			System.out.println(this.getClass() + "\tWAITING FOR CLIENTS...");
 			try {
@@ -48,7 +46,17 @@ public class ClientAcceptingServer extends Server
 				oosMap.get(client).flush();
 				oisMap.put(client, new ObjectInputStream(client.getInputStream()));
 
-				threadMap.put(client, new Thread(new ClientService()));
+				Data d = (Data) oisMap.get(client).readObject();
+				String id =(String) d.obj;
+				idSocketMap.put(id, client);
+				System.out.println( String.format("USER %s", id) );
+
+				threadMap.put(client, new Thread(
+						ServerMain.clientThreadGroup,
+						new ServerLogUI.ServerRoutineHandler(
+								client, oosMap.get(client), oisMap.get(client))));
+				threadMap.get(client).start();
+
 			}
 			catch (Exception e) {e.printStackTrace();}
 		}
@@ -69,8 +77,9 @@ public class ClientAcceptingServer extends Server
 	}
 
 	@Override
-	public void onReceiveData(Data data) {
-
+	public void onReceiveData(Data data, WindowFrame frame) {
+		frame.onReceiveData(data, frame);
 	}
+
 
 }

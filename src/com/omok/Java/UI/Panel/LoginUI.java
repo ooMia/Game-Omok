@@ -1,29 +1,34 @@
 package com.omok.Java.UI.Panel;
 
+import com.omok.Java.Backend.Service.RoutineHandler;
 import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
 import com.omok.Java.ServerMain;
 import com.omok.Java.UI.Frame.ClientFrame;
+import com.omok.Java.UI.Frame.ServerFrame;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
+import com.omok.Java.UI.WindowFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import static com.omok.Java.Data.CodeType.ON_LOGIN;
 
 public class LoginUI extends InnerPanel {
 
+	public static ClientFrame frame;
+
 	private JLabel label_nickname;
 	private JTextField textField_nickname;
 	private JButton button_login;
 
 	private Image loginBackground;
-
-	private ClientFrame frame;
 
 	public LoginUI(ClientFrame clientFrame)
 	{
@@ -64,10 +69,17 @@ public class LoginUI extends InnerPanel {
 		if (userNickname.length() != 0) {
 			try {
 				Socket socket = new Socket(ServerMain.host, ServerMain.portNum);
-				sendData(ON_LOGIN, new Data(socket));
+				System.out.println("CONNECTED: " + socket);
+
+				frame.oos = new ObjectOutputStream(socket.getOutputStream());
+				frame.oos.flush();
+				frame.ois = new ObjectInputStream(socket.getInputStream());
+				frame.oos.writeObject(new Data(userNickname));
+
 			} catch (IOException e) {
 				e.printStackTrace(); return;
 			}
+			frame.setInnerPanel(ON_LOGIN);
 		}
 	}
 
@@ -93,8 +105,16 @@ public class LoginUI extends InnerPanel {
 	}
 
 	@Override
-	public void onReceiveData(Data data) {
+	public void onReceiveData(Data data, WindowFrame frame) {
+		frame.onReceiveData(data, frame);
+	}
 
+
+	private class LoginRoutineHandler extends RoutineHandler {
+
+		public LoginRoutineHandler() {
+			this.windowFrame = LoginUI.frame;
+		}
 	}
 }
 

@@ -2,10 +2,6 @@ package com.omok.Java.UI;
 
 import com.omok.Java.Backend.Service.DataHandler;
 import com.omok.Java.Data.CodeType;
-import com.omok.Java.Data.Data;
-import com.omok.Java.UI.Panel.Lobby.LobbyLeftPanel;
-import com.omok.Java.UI.Panel.Lobby.LobbyRightPanel;
-import com.omok.Java.UI.Panel.LobbyUI;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
 
 import javax.swing.*;
@@ -13,7 +9,7 @@ import java.awt.*;
 
 // create new window which contains a panel
 // all objects which extends WindowFrame should override function run() from interface Runnable
-public abstract class WindowFrame extends JFrame {
+public abstract class WindowFrame extends JFrame implements DataHandler {
 
 	private Container container;
 	private InnerPanel innerPanel;
@@ -24,11 +20,13 @@ public abstract class WindowFrame extends JFrame {
 		this.innerPanel = null;
 	}
 
-	public void setInnerPanel(CodeType codeType) {
+	public InnerPanel getInnerPanel() {
+		return innerPanel;
+	}
+
+	public void setInnerPanel(InnerPanel innerPanel) {
 		if (this.innerPanel != null) {
-			this.innerPanel.setVisible(false);
-			// TODO check innerPanel change
-			// remove(this.innerPanel);
+			remove(this.innerPanel);
 		}
 		container.add(innerPanel);
 		this.innerPanel = innerPanel;
@@ -36,4 +34,5 @@ public abstract class WindowFrame extends JFrame {
 		repaint();
 	}
 
+	public abstract void setInnerPanel(CodeType codeType);
 }

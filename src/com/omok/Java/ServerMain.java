@@ -1,13 +1,9 @@
 package com.omok.Java;
 
 import com.omok.Java.Backend.Server.ClientAcceptingServer;
-import com.omok.Java.Backend.Server.DataHandlingServer;
 import com.omok.Java.Data.CodeType;
 import com.omok.Java.UI.Frame.ServerFrame;
-import com.omok.Java.UI.Panel.ServerLogUI;
-import com.omok.Java.UI.Panel.Structure.InnerPanel;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,6 +22,7 @@ public class ServerMain {
 	public static HashMap<Socket, ObjectInputStream> userSocketOISHashMap;
 	public static HashMap<Socket, ObjectOutputStream> userSocketOOSHashMap;
 	public static HashMap<Socket, Thread> userSocketThreadMap;
+	public static ServerFrame serverFrame;
 
 	public static void main(String[] args) throws IOException
 	{
@@ -35,11 +32,12 @@ public class ServerMain {
 		userSocketOOSHashMap = new HashMap<>();
 		userSocketThreadMap = new HashMap<>();
 
-		ServerFrame serverFrame = new ServerFrame("HostConfigurePanel");
+		serverFrame = new ServerFrame("HostConfigurePanel");
 		serverFrame.setInnerPanel(CodeType.ON_START);
+	}
 
+	public static void run() {
 		// run server threads
-		new Thread(serverThreadGroup, new ClientAcceptingServer(serverFrame));
-		new Thread(serverThreadGroup, new DataHandlingServer(serverFrame));
+		new Thread(serverThreadGroup, new ClientAcceptingServer(serverFrame)).start();
 	}
 }

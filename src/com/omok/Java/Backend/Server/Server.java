@@ -15,17 +15,19 @@ public abstract class Server extends Thread implements DataHandler {
 
 	private final String host = ServerMain.host;
 	private final Integer portNum = ServerMain.portNum;
-	private final ThreadGroup serverThreadGroup = ServerMain.serverThreadGroup;
-	private final ThreadGroup clientThreadGroup = ServerMain.clientThreadGroup;
-	private  ServerSocket serverSocket = ServerMain.serverSocket;
-	private  HashMap<String, Socket> userNicknameSocketHashMap = ServerMain.userNicknameSocketHashMap;
-	private  HashMap<Socket, ObjectInputStream> userSocketOISHashMap = ServerMain.userSocketOISHashMap;
-	private  HashMap<Socket, ObjectOutputStream> userSocketOOSHashMap = ServerMain.userSocketOOSHashMap;
+	protected final ThreadGroup serverThreadGroup = ServerMain.serverThreadGroup;
+	protected final ThreadGroup clientThreadGroup = ServerMain.clientThreadGroup;
+
+	private ServerSocket serverSocket = ServerMain.serverSocket;
+	private HashMap<String, Socket> userNicknameSocketHashMap = ServerMain.userNicknameSocketHashMap;
+	private HashMap<Socket, ObjectInputStream> userSocketOISHashMap = ServerMain.userSocketOISHashMap;
+	private HashMap<Socket, ObjectOutputStream> userSocketOOSHashMap = ServerMain.userSocketOOSHashMap;
 
 
+	protected ServerFrame serverFrame;
 
 	public Server(ServerFrame serverFrame) {
-
+		this.serverFrame = serverFrame;
 	}
 
 	@Override
@@ -33,7 +35,6 @@ public abstract class Server extends Thread implements DataHandler {
 		System.out.println(this.toString() + "\tSTART");
 
 		System.out.println(this.toString() + "\tRUNNING");
-
 
 		while(serverThreadGroup.activeCount() > 0);
 		System.out.println(this.toString() + "\tEND");

@@ -1,27 +1,40 @@
 package com.omok.Java.UI.Panel;
 
+import com.omok.Java.Backend.Service.RoutineHandler;
 import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
 import com.omok.Java.ServerMain;
+import com.omok.Java.UI.Frame.ServerFrame;
 import com.omok.Java.UI.Panel.Structure.InnerPanel;
 import com.omok.Java.UI.WindowFrame;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class ServerLogUI extends InnerPanel
 {
 	private ServerSocket serverSocket = ServerMain.serverSocket;
+	public static ServerFrame frame;
 
-	public ServerLogUI(WindowFrame windowFrame)
+	private JPanel contentPane;
+	JTextArea textArea;
+	private JTextField txtPortNumber;
+
+
+	public ServerLogUI(ServerFrame serverFrame)
 	{
-		super(windowFrame);
+		super(serverFrame);
+		this.frame = serverFrame;
 
-		contentPane.setLayout(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		serverFrame.setContentPane(contentPane);
+		contentPane.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 10, 300, 298);
@@ -44,22 +57,18 @@ public class ServerLogUI extends InnerPanel
 
 		JButton btnServerStart = new JButton("Server Start");
 		btnServerStart.addActionListener(e -> {
-
-			serverLog("Chat Server Running..");
-			btnServerStart.setText("Chat Server Running..");
-			btnServerStart.setEnabled(false); // 서버를 더이상 실행시키지 못 하게 막는다
-			txtPortNumber.setEnabled(false); // 더이상 포트번호 수정못 하게 막는다
-//			AcceptServer accept_server = new AcceptServer();
-//			accept_server.start();
+			ServerMain.run(); // 등록된 Server 루틴 실행
+			serverLog("Server Running..");
+			btnServerStart.setText("Server Running..");
+			btnServerStart.setEnabled(false);
+			txtPortNumber.setEnabled(false);
 		});
 		btnServerStart.setBounds(12, 356, 300, 35);
 		contentPane.add(btnServerStart);
 	}
 
 
-	private JPanel contentPane;
-	JTextArea textArea;
-	private JTextField txtPortNumber;
+
 
 	private void serverLog(String str) {
 		textArea.append(String.format("%s\n", str));
@@ -76,10 +85,32 @@ public class ServerLogUI extends InnerPanel
 	}
 
 	@Override
-	public void onReceiveData(Data data) {
+	public void onReceiveData(Data data, WindowFrame frame) {
 
 	}
 
 
+	public static class ServerRoutineHandler extends RoutineHandler
+	{
+		public static Socket socket;
+		public static ObjectOutputStream oos;
+		public static ObjectInputStream ois;
+		public static String nickname;
+
+		public ServerRoutineHandler(Socket socket, ObjectOutputStream oos, ObjectInputStream ois) throws IOException, ClassNotFoundException {
+			this.windowFrame = ServerLogUI.frame;
+			this.socket = socket;
+			this.oos = oos;
+			this.ois = ois;
+			this.nickname = (String) ois.readObject();
+		}
+
+		@Override
+		public void run() {
+			super.run();
+		}
+
+
+	}
 
 }

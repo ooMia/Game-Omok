@@ -24,11 +24,9 @@ public class ClientFrame extends WindowFrame implements DataHandler
 
 	public ClientFrame(String title) {
 		super(title);
+		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		pack();
-		setVisible(true);
-		setLocationRelativeTo(null);
 	}
 
 	public ClientFrame createChildClientFrame(String title, ClientFrame parentFrame){
@@ -39,41 +37,32 @@ public class ClientFrame extends WindowFrame implements DataHandler
 
 	@Override
 	public void setInnerPanel(CodeType codeType) {
-		InnerPanel panel;
+
 		switch (codeType){
 			case ON_START -> {
-				panel = new LoginUI(this);
 				setPreferredSize(new Dimension(626, 418));
-				setVisible(true);
+				setInnerPanel(new LoginUI(this));
 			}
 			case ON_LOGIN -> {
-				panel = new LobbyUI(this);
+				setPreferredSize(new Dimension(940, 780));
+				setInnerPanel(new LobbyUI(this));
 			}
 		}
+		pack();
+		setLocationRelativeTo(null);
 	}
+
 
 	@Override
 	public void sendData(CodeType codeType, Data data) {
-		switch (codeType) {
-			case ON_LOGIN -> {
-				this.socket = (Socket) data.obj;
-				try {
-					oos = new ObjectOutputStream(socket.getOutputStream());
-					oos.flush();
-					ois = new ObjectInputStream(socket.getInputStream());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				InnerPanel innerPanel = new LobbyUI(this);
-				setPreferredSize(new Dimension(338, 440));
-				setVisible(true);
-			}
 
-		}
+
 	}
 
 	@Override
-	public void onReceiveData(Data data) {
-
+	public void onReceiveData(Data data, WindowFrame frame) {
+		getInnerPanel().onReceiveData(data, this);
 	}
+
+
 }

@@ -12,26 +12,28 @@ import java.awt.*;
 
 public class ServerFrame extends WindowFrame implements DataHandler
 {
+	private InnerPanel innerPanel;
 
 	public ServerFrame(String title) {
 		super(title);
+		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		pack();
-		setVisible(true);
-		setLocationRelativeTo(null);
 	}
 
 	@Override
 	public void setInnerPanel(CodeType codeType) {
 		switch (codeType){
 			case ON_START -> {
-				InnerPanel innerPanel = new ServerLogUI(this);
+				this.innerPanel = new ServerLogUI(this);
 				setPreferredSize(new Dimension(338, 440));
-				setVisible(true);
 			}
+
 		}
+		pack();
+		setLocationRelativeTo(null);
 	}
+
 
 	@Override
 	public void sendData(CodeType codeType, Data data) {
@@ -39,7 +41,9 @@ public class ServerFrame extends WindowFrame implements DataHandler
 	}
 
 	@Override
-	public void onReceiveData(Data data) {
-
+	public void onReceiveData(Data data, WindowFrame frame) {
+		getInnerPanel().onReceiveData(data, this);
 	}
+
+
 }

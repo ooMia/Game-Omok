@@ -1,12 +1,10 @@
 package com.omok.Java.Backend.Service;
 
-import com.omok.Java.Data.Data;
 
-import java.io.IOException;
+import com.omok.Java.UI.WindowFrame;
 
-public interface RoutineHandler {
+public abstract class RoutineHandler extends Thread{
 
-	void routine_Login(Data login) throws IOException, ClassNotFoundException;
-
+	public WindowFrame windowFrame;
 
 }

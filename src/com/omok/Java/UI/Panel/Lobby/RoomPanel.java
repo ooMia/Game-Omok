@@ -1,19 +1,20 @@
 package com.omok.Java.UI.Panel.Lobby;
 
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.omok.Java.Data.CodeType;
+import com.omok.Java.Data.Data;
+import com.omok.Java.UI.Panel.LobbyUI;
+import com.omok.Java.UI.Panel.Structure.InnerPanel;
+import com.omok.Java.UI.WindowFrame;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 
-public class RoomPanel extends JPanel {
-	private static final long serialVersionUID = 1L;
+public class RoomPanel extends InnerPanel implements Serializable {
 
 	private Image backgroundImage;
 	
@@ -29,6 +30,7 @@ public class RoomPanel extends JPanel {
 	private JButton observerBtn;
 	
 	public RoomPanel(String rID, String rTitle, int uNum) {
+		super(LobbyUI.frame);
 		this.setPreferredSize(new Dimension(394, 60));
 		this.setLayout(null);
 		this.setOpaque(false);
@@ -108,5 +110,15 @@ public class RoomPanel extends JPanel {
 	    
 	    if(backgroundImage != null)
 	    	g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
+	}
+
+	@Override
+	public void sendData(CodeType codeType, Data data) {
+
+	}
+
+	@Override
+	public void onReceiveData(Data data, WindowFrame frame) {
+
 	}
 }

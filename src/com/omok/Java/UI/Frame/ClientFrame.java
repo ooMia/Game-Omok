@@ -50,6 +50,9 @@ public class ClientFrame extends WindowFrame implements DataHandler
 				setPreferredSize(new Dimension(940, 780));
 				setInnerPanel(new LobbyUI(this));
 			}
+			case CREATE_ROOM -> {
+//				setInnerPanel();
+			}
 		}
 		pack();
 		setLocationRelativeTo(null);

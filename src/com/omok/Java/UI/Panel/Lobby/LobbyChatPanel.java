@@ -3,6 +3,8 @@ package com.omok.Java.UI.Panel.Lobby;
 import com.omok.Java.Data.CodeType;
 import com.omok.Java.Data.Data;
 import com.omok.Java.UI.Panel.LobbyUI;
+import com.omok.Java.UI.Panel.Structure.InnerPanel;
+import com.omok.Java.UI.WindowFrame;
 
 import java.awt.*;
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class LobbyChatPanel extends JPanel {
 	private JButton directJoin;
 	
 	public LobbyChatPanel() {
+
 		ImageIcon backIcon = new ImageIcon("./image/mainbackground.jpg");
 		woodBackground = backIcon.getImage();
 		
@@ -84,12 +87,7 @@ public class LobbyChatPanel extends JPanel {
 
 		AtomicInteger i = new AtomicInteger();
 		createRoom.addActionListener(e -> {
-			try {
-				RoomPanel roomPanel = new RoomPanel(i.incrementAndGet()+"","room"+i, 1);
-				LobbyUI.frame.oos.writeObject(new Data(roomPanel));
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+
 		});
 
 
@@ -111,4 +109,5 @@ public class LobbyChatPanel extends JPanel {
 	    if(woodBackground != null)
 	    	g2.drawImage(woodBackground, 0, 0, 1000, 780, null);
 	}
+
 }

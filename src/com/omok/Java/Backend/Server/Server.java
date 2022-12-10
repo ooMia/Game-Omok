@@ -4,7 +4,6 @@ import com.omok.Java.Backend.Service.DataHandler;
 import com.omok.Java.ServerMain;
 import com.omok.Java.UI.Frame.ServerFrame;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;

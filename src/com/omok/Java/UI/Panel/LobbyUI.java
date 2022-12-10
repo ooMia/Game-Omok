@@ -13,21 +13,24 @@ import com.omok.Java.UI.WindowFrame;
 
 import java.io.IOException;
 
+
 public class LobbyUI extends DefaultInnerPanel {
 
-	public static LobbyLeftPanel lobbyLeftPanel = new LobbyLeftPanel();
-	public static LobbyRightPanel lobbyRightPanel = new LobbyRightPanel();
+	public LobbyLeftPanel lobbyLeftPanel;
+	public LobbyRightPanel lobbyRightPanel;
 
 	public static ClientFrame frame;
 	public LobbyUI(ClientFrame clientFrame) {
 		super(
 				clientFrame,
-				lobbyLeftPanel,
-				lobbyRightPanel,
+				new LobbyLeftPanel(),
+				new LobbyRightPanel(),
 				null,
 				null
 		);
 		this.frame = clientFrame;
+		this.lobbyLeftPanel = new LobbyLeftPanel();
+		this.lobbyRightPanel = new LobbyRightPanel();
 	}
 
 	@Override
@@ -47,6 +50,23 @@ public class LobbyUI extends DefaultInnerPanel {
 
 	@Override
 	public void onReceiveData(Data data, WindowFrame frame) {
+		try {
+			CodeType codeType = (CodeType) this.frame.ois.readObject();
+			switch (codeType){
+				case CREATE_ROOM -> {
+					String p1 = (String) this.frame.ois.readObject();
+					String p2 = (String) this.frame.ois.readObject();
+					int p3 = (int) this.frame.ois.readObject();
+					LobbyLeftPanel.roomListPanel.addRoom(p1, p2, p3);
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
 
 	}
 

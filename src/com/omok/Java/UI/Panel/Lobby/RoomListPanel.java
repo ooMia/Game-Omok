@@ -9,6 +9,7 @@ import javax.swing.*;
 public class RoomListPanel extends JPanel {
 	public static final long serialVersionUID = 1L;
 
+
 	private Image backgroundImage;
 	// layout
 	private GridBagLayout gridBag;

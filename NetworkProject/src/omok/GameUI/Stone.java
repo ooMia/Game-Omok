@@ -6,12 +6,12 @@ import javax.swing.JLabel;
 
 public class Stone {
 	private Point p;
-	private int stoneCnt; // 수순
+	//private int stoneCnt; // 수순
 	private JLabel label;
 	
-	public Stone(Point p, int c, JLabel label) {
+	public Stone(Point p, JLabel label) {
 		this.p = p;
-		this.stoneCnt = c;
+		//this.stoneCnt = c;
 		this.label = label;
 	}
 	
